@@ -3,4 +3,5 @@
 export(interactive_matrix_inverse)
 export(interactive_pca)
 export(interactive_regression)
+export(machine_precision)
 export(visualize_inverse)
