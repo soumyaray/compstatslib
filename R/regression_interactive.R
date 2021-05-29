@@ -34,6 +34,8 @@ interactive_regression <- function(points=data.frame(), ...) {
 #'
 #' params:
 #'   points - dataframe of x,y points to plot
+#'   
+#' @export
 plot_regr <- function(points, regression=TRUE, stats=TRUE) {
   max_x <- 50
   if (nrow(points) == 0) {
