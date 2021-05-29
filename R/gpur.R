@@ -1,6 +1,6 @@
 ## Demos power of GPU at matrix multiplication
 gpu_demo <- function() {
-  library(gpuR)
+  require(gpuR)
   
   ORDER = 2000
   

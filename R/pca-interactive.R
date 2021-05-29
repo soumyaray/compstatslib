@@ -1,3 +1,4 @@
+#' @export
 interactive_pca <- function(meancenter = TRUE) {
   cat("Click on the plot to create data points; hit [esc] to stop")
   

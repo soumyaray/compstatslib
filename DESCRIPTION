@@ -1,0 +1,20 @@
+Package: compstatslib
+Type: Package
+Title: Interactive tools and functions to teach or learn concepts in computational statistics
+Version: 0.1
+Date: 2021-05-29
+Author: Soumya Ray
+Maintainer: Soumya Ray <soumya.ray@gmail.com>
+Description: Collection of interactive tools and helper functions that help 
+  teachers and students learn concepts in computational statistics. 
+  Useful for homework or in-class demonstrations.
+Imports:
+  manipulate
+Enhances:
+  gpuR
+Remotes:
+  github::cdeterman/gpuR
+Depends: R (>= 3.5.0)
+License: GPL-3
+Encoding: UTF-8
+RoxygenNote: 7.1.1
