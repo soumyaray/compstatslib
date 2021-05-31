@@ -41,9 +41,9 @@ interactive_pca <- function(meancenter = TRUE) {
       rownames(vec) <- c('x', 'y')
       colnames(vec) <- c('PC1', 'PC2')
       
-      arrows( mc_diff['x'], mc_diff['y'], 
-              vec['x',]+mc_diff['x'],  vec['y',]+mc_diff['y'], 
-              lty=c("solid", "dotted"), length = 0.1)
+      arrows( -vec['x',]+mc_diff['x'], -vec['y',]+mc_diff['y'], 
+               vec['x',]+mc_diff['x'],  vec['y',]+mc_diff['y'], 
+               lty=c("solid", "dotted"), length = 0.1)
     }
   }
   
