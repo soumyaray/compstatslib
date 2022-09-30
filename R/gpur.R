@@ -1,6 +1,7 @@
-## Demos power of GPU at matrix multiplication
+#' DEPRECATED -- gpuR no longer available on CRAN
+#' Demos power of GPU at matrix multiplication
 gpu_demo <- function() {
-  require(gpuR)
+  # require(gpuR)
   
   ORDER = 2000
   
