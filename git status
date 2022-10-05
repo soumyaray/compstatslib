@@ -1,0 +1,68 @@
+[33mcommit d9746b052f410ae0dad855cc96b46ce6bda5de31[m[33m ([m[1;36mHEAD -> [m[1;32mevo[m[33m)[m
+Author: daniele749 <106737685+daniele749@users.noreply.github.com>
+Date:   Thu Oct 6 03:12:33 2022 +0800
+
+    Adding t_power() function description to README.Rmd
+
+[33mcommit 4787bd763b0a97528baffdc19c554f70da30c855[m[33m ([m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m
+Merge: 633d977 070a9f8
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Fri Sep 30 11:58:26 2022 +0800
+
+    Merge pull request #1 from soumyaray/fix-remove-gpur
+    
+    Remove gpuR from package
+
+[33mcommit 070a9f8cf049479f8dd309d8ca712760a6b622fa[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Fri Sep 30 11:55:43 2022 +0800
+
+    Remove gpuR from package
+
+[33mcommit 633d9772ede3215ee4c5479176a5a5746a8b977c[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Mon May 31 08:58:31 2021 +0800
+
+    Update PCA demo; add data
+
+[33mcommit 7ca24d6ff4e6f9dc94dfc7d7bfd927f4003abd3e[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sun May 30 00:12:06 2021 +0800
+
+    README available
+
+[33mcommit 15d9e9dfec817a32e3ae6a3995a97247089b5e24[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sat May 29 23:43:39 2021 +0800
+
+    Machine precision report
+
+[33mcommit ea87f97efe88a7277ccebd89db602a6c0afd3854[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sat May 29 23:33:23 2021 +0800
+
+    Rename package to compstatslib
+
+[33mcommit 9128eece12b9d0f926097abe20c0907973b0225e[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sat May 29 22:14:52 2021 +0800
+
+    PCA interactive demo
+
+[33mcommit 5e246b68b5845b5a8f1375a050417b1324a76b53[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sat May 29 22:13:55 2021 +0800
+
+    Refactor gpu and regression examples
+
+[33mcommit c4035d28278e57273a12f3f2c1c28c3de4b4f955[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sat May 29 22:12:44 2021 +0800
+
+    Rename project to compstats
+
+[33mcommit a164ef15efb4e5fd2466ba9dcce1e6aa73a4934b[m
+Author: Soumya Ray <soumya.ray@gmail.com>
+Date:   Sat Aug 5 18:58:08 2017 +0800
+
+    Create first resource on matrix inversion
