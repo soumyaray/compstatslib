@@ -3,7 +3,7 @@ library(manipulate)
 #' interactive_stat_power() is an interactive visualization function that allows you to play with the parameters that affect hypothesis tests in order to see how their variation influences the statistical power.
 #' Click on the gear icon on the top-left corner of the plotting area to open the parameters' settings. You can see the movement of the alternative t-statistics distribution with respect to the null distribution, and the consequent change in statistical power.
 #' 
-#' You do not need to supply any parameters to the function.
+#' You do not need to supply any parameters to the function when calling it. 
 #' 
 #' When pressing the gear icon, you will see the following parameters:
 #'    diff - the test difference,
