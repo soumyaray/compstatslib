@@ -1,4 +1,4 @@
-#' interactive_stat_power() is an interactive visualization function that allows you to play with the parameters that affect hypothesis tests in order to see how their variation influences the statistical power.
+#' interactive_t_test() is an interactive visualization function that allows you to play with the parameters that affect hypothesis tests in order to see how their variation influences the statistical power.
 #' Click on the gear icon on the top-left corner of the plotting area to open the parameters' settings. You can see the movement of the alternative t-statistics distribution with respect to the null distribution, and the consequent change in statistical power.
 #' 
 #' You do not need to supply any parameters to the function when calling it. 
@@ -10,7 +10,7 @@
 #'    alpha - significance level.
 #' 
 #' @export
-interactive_stat_power <- function() {
+interactive_t_test <- function() {
   manipulate::manipulate(
     t_test_plot(diff, sd, n, alpha),
     diff  = manipulate::slider(0, 4, step = 0.1, initial = 0.5),
