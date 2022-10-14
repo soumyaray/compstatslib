@@ -13,4 +13,4 @@ Imports:
 Depends: R (>= 3.5.0)
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
