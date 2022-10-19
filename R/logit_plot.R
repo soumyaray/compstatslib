@@ -2,12 +2,13 @@
 plot_logit <- function(points, regression=TRUE, stats=TRUE, min_x=0, max_x=50) {
   # Blank plotting figure if no data yet
   if (nrow(points) == 0) {
-    plot(NA, xlim=c(min_x, max_x), ylim=c(0, 1), xlab="x", ylab="y")
+    plot_points_logit(NA)
     return()
   }
   
   # Plot points
-  plot(points, xlim=c(min_x, max_x), ylim=c(0, 1), pch=19, cex=2, col="gray")
+  plot_points_logit(points)
+  
   if (nrow(points) < 2) return()
   
   # Plot regression curve if requested
@@ -19,7 +20,7 @@ plot_logit <- function(points, regression=TRUE, stats=TRUE, min_x=0, max_x=50) {
     # Plot curve using predicted values based on model
     newdata <- data.frame(x=seq(min_x, max_x, len=500))
     newdata$y = predict(regr, newdata, type="response")
-    lines(y ~ x, newdata)
+    lines(y ~ x, newdata, lwd=2, col="cornflowerblue")
     
     # Print stats on plot if requested    
     if (stats) {  
@@ -41,4 +42,11 @@ plot_logit <- function(points, regression=TRUE, stats=TRUE, min_x=0, max_x=50) {
       # par(family="sans")
     }
   }
+}
+
+plot_points_logit <- function(points, min_x=0, max_x=50) {
+  plot(points, xlim=c(min_x, max_x), ylim=c(0, 1), 
+       xlab="x", ylab="y", pch=19, cex=2, col="gray")
+
+  abline(h=0.5, lwd=1, col="lightgray", lty="dotted")
 }
