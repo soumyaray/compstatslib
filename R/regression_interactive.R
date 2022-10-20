@@ -2,7 +2,8 @@
 #' 
 #' Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 #'   
-#' @param points A dataframe containing coordinates for estimating the regression. 
+#' @param points A dataframe containing coordinates for estimating the regression.
+#' 
 #' @param ... Further arguments passed to or from other methods.
 #' 
 #' @return A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
@@ -22,7 +23,6 @@
 #' @seealso \code{\link{plot_regr}}
 #' 
 #' @examples  
-#' 
 #' # Providing coordinates beforehand:
 #' points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
 #' 

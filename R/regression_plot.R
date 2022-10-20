@@ -1,10 +1,33 @@
-#' compstatslib plot_regr(points) function
+#' compstatslib plot_regr() function
 #' 
 #' Non-interactive visualization function that plots given points, regression line and relevant statistics.
 #'
-#' params:
-#'   points - dataframe of x,y points to plot
+#' @param points A dataframe of *x* and *y* coordinates to plot.
+#' 
+#' @param regression A logical parameter that plots a regression line when set to TRUE and hides it when set to FALSE. It is set to TRUE by default.
+#' 
+#' @param stats A logical parameter that displays the relevant statistics on the plot area when set to TRUE; it hides them when set to FALSE. It is set to TRUE by default.
+#' 
 #'   
+#' @return A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+#'  \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
+#'  \item{Raw slope}{The value of the slope parameter.}
+#'  \item{Correlation}{The strength of the linear relationship.}
+#'  \item{SSR}{The sum of squares regression.}
+#'  \item{SSE}{The sum of squares error.}
+#'  \item{SST}{The sum of squares total.}
+#'  \item{R-squared}{The multiple coefficient of determination.}
+#' 
+#' @usage 
+#' plot_regr(points, ...)
+#' 
+#' @seealso \code{\link{interactive_regression}}
+#' 
+#' @example 
+#' points <- data.frame(x = c(1, 3, 5, 8), y = c(2, 4, 6 ,8))
+#' 
+#' plot_regr(points)
+#' 
 #' @export
 plot_regr <- function(points, regression=TRUE, stats=TRUE) {
   max_x <- 50

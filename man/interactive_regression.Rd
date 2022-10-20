@@ -28,7 +28,6 @@ Interactive visualization function that lets you point-and-click to add data poi
 }
 \examples{
  
-
 # Providing coordinates beforehand:
 points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
 
