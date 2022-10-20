@@ -7,7 +7,7 @@
 #' @return A dataframe containing the *x* and *y* coordinates of the points selected by the user, and a list of parameters related to the estimated principal components, including:
 #' \item{sdev}{A vector of the standard deviations of the estimated principal components.}
 #' \item{rotation}{A dataframe of the principal components coordinates.}
-#' \item{center}{}
+#' \item{center}{A vector of length equal the number of columns of x can be supplied. The value is passed to *scale*.}
 #' \item{scale}{A logical value indicating whether the variables should be scaled to have unit variance before the analysis takes place. The default is FALSE.}
 #' \item{x}{A numeric or complex matrix (or data frame) which provides the data for the principal components analysis.}
 #'
