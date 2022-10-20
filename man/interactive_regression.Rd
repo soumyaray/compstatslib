@@ -26,16 +26,6 @@ A dataframe containing the points coordinates. Additionally, the following param
 \description{
 Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 }
-\details{
-You can supply the following parameter:
-  old_pts - dataframe of x,y points to start interacting with
-
-You will also see three numbers: 
-  intercept – where the regression line intercepts the y-axis
-  regression coefficient – the slope of x on y
-  correlation - correlation of x and y
-  r-squared - R^2 of y
-}
 \examples{
  
 

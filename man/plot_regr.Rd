@@ -2,11 +2,14 @@
 % Please edit documentation in R/regression_plot.R
 \name{plot_regr}
 \alias{plot_regr}
-\title{#' plot_regr(points) plots given points, regression line, stats}
+\title{compstatslib plot_regr(points) function}
 \usage{
 plot_regr(points, regression = TRUE, stats = TRUE)
 }
 \description{
+Non-interactive visualization function that plots given points, regression line and relevant statistics.
+}
+\details{
 params:
   points - dataframe of x,y points to plot
 }

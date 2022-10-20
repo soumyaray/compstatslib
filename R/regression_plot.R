@@ -1,4 +1,6 @@
-#'#' plot_regr(points) plots given points, regression line, stats
+#' compstatslib plot_regr(points) function
+#' 
+#' Non-interactive visualization function that plots given points, regression line and relevant statistics.
 #'
 #' params:
 #'   points - dataframe of x,y points to plot
