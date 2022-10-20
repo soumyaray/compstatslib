@@ -2,20 +2,52 @@
 % Please edit documentation in R/regression_interactive.R
 \name{interactive_regression}
 \alias{interactive_regression}
-\title{interactive_regression() runs a regression simulation.
-Click on the plotting area to add points and see a corresponding regression line
- (hitting ESC will stop the simulation).}
+\title{compstatslib interactive_regression() function}
 \usage{
-interactive_regression(points = data.frame(), ...)
+interactive_regression(points, ...)
+
+Click on the plotting area to add points and see a corresponding regression line (hitting ESC will stop the simulation).
+}
+\arguments{
+\item{points}{A dataframe containing coordinates for estimating the regression.}
+
+\item{...}{Further arguments passed to or from other methods.}
+}
+\value{
+A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+ \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
+ \item{Raw slope}{The value of the slope parameter.}
+ \item{Correlation}{The strength of the linear relationship.}
+ \item{SSR}{The sum of squares regression.}
+ \item{SSE}{The sum of squares error.}
+ \item{SST}{The sum of squares total.}
+ \item{R-squared}{The multiple coefficient of determination.}
 }
 \description{
-You can supply the following parameter:
-  old_pts - dataframe of x,y points to start interacting with
+Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 }
 \details{
+You can supply the following parameter:
+  old_pts - dataframe of x,y points to start interacting with
+
 You will also see three numbers: 
   intercept – where the regression line intercepts the y-axis
   regression coefficient – the slope of x on y
   correlation - correlation of x and y
   r-squared - R^2 of y
+}
+\examples{
+ 
+
+# Providing coordinates beforehand:
+points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
+
+interactive_regression(points)
+
+# Selecting coordinates on the plot area:
+interactive_regression()
+
+}
+\seealso{
+\code{\link{plot_regr}}
 }
