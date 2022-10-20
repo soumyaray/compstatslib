@@ -53,9 +53,6 @@ interactive_matrix_inverse <- function(x1_init=1, y1_init=2, x2_init=2, y2_init=
 #'
 #' @seealso \code{\link{interactive_matrix_inverse}}
 #'
-#' @example 
-#' visualize_inverse(1, 2, 2, 1)
-#'
 #' @export
 visualize_inverse <- function(x1, y1, x2, y2) {
   A <- matrix(c(x1, y1, x2, y2), nrow = 2)

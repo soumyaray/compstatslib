@@ -3,11 +3,8 @@
 #' Interactive visualization function that allows one to *manipulate* the parameters that affect hypothesis testing in order to see how their variation influences the null t and alternative t distributions, and statistical power.
 #' 
 #' @param diff The test difference.
-#' 
 #' @param sd Population standard deviation.
-#' 
 #' @param n Sample size.
-#' 
 #' @param alpha Significance level.
 #' 
 #' @usage 
