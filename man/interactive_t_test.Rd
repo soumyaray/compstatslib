@@ -2,18 +2,21 @@
 % Please edit documentation in R/t_statistic_interactive.R
 \name{interactive_t_test}
 \alias{interactive_t_test}
-\title{interactive_t_test() is an interactive visualization function that allows you to play with the parameters that affect hypothesis tests in order to see how their variation influences the statistical power.
-Click on the gear icon on the top-left corner of the plotting area to open the parameters' settings. You can see the movement of the alternative t-statistics distribution with respect to the null distribution, and the consequent change in statistical power.}
+\title{compstatslib interactive_t_test() function}
 \usage{
 interactive_t_test()
+
+One can click on the gear icon on the top-left corner of the plotting area to open the parameters' settings. The movement of the alternative t-statistics distribution with respect to the null distribution will be visible, as well as the consequent change in statistical power.
+}
+\arguments{
+\item{diff}{The test difference.}
+
+\item{sd}{Population standard deviation.}
+
+\item{n}{Sample size.}
+
+\item{alpha}{Significance level.}
 }
 \description{
-You do not need to supply any parameters to the function when calling it.
-}
-\details{
-When pressing the gear icon, you will see the following parameters:
-   diff - the test difference,
-   sd - population standard deviation,
-   n - sample size,
-   alpha - significance level.
+Interactive visualization function that allows one to *manipulate* the parameters that affect hypothesis testing in order to see how their variation influences the null t and alternative t distributions, and statistical power.
 }
