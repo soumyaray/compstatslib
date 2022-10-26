@@ -19,7 +19,8 @@
 #' @usage 
 #' interactive_matrix_inverse(x1_init=1, y1_init=2, x2_init=2, y2_init=1)
 #' 
-#' After running the function, the user can click on the gear icon in the top-left corner of the plot area. A window with four slider bars will pop up, allowing the user to change the value of the 4 parameters.
+#' After running the function, the user can click on the gear icon in the top-left corner of the plot area.
+#' A window with four slider bars will pop up, allowing the user to change the value of the 4 parameters.
 #' 
 #' @seealso \code{\link{visualize inverse}}
 #'
