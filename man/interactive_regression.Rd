@@ -9,12 +9,12 @@ interactive_regression(points, ...)
 Click on the plotting area to add points and see a corresponding regression line (hitting ESC will stop the simulation).
 }
 \arguments{
-\item{points}{A dataframe containing coordinates for estimating the regression.}
+\item{points}{An optional \code{dataframe} of *x* and *y* points to plot and estimate the regression. If no \code{points} are provided, the user is free to click and create points on the plot area.}
 
-\item{...}{Further arguments passed to or from other methods.}
+\item{...}{Further arguments passed to the \code{plot_regr()} function that produces the plot.}
 }
 \value{
-A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
  \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
  \item{Raw slope}{The value of the slope parameter.}
  \item{Correlation}{The strength of the linear relationship.}
@@ -27,14 +27,17 @@ A dataframe containing the points coordinates. Additionally, the following param
 Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 }
 \examples{
- 
-# Providing coordinates beforehand:
+# Selecting coordinates on the plot area, storing them in 'pts'
+pts <- interactive_regression()
+
+# Replotting the points stored earlier in 'pts', allowing the user to continue the interactive regression
+interactive_regression(pts)
+
+# Providing coordinates beforehand
 points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
 
+# Replotting the coordinates and continuing the interactive regression
 interactive_regression(points)
-
-# Selecting coordinates on the plot area:
-interactive_regression()
 
 }
 \seealso{

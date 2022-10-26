@@ -6,7 +6,8 @@
 \usage{
 interactive_t_test()
 
-One can click on the gear icon on the top-left corner of the plotting area to open the parameters' settings. The movement of the alternative t-statistics distribution with respect to the null distribution will be visible, as well as the consequent change in statistical power.
+One can click on the gear icon on the top-left corner of the plotting area to open the parameter settings.
+The movement of the alternative t-statistics distribution with respect to the null distribution will be visible, as well as the consequent change in statistical power.
 }
 \arguments{
 \item{diff}{The test difference.}

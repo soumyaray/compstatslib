@@ -2,14 +2,14 @@
 #' 
 #' Non-interactive visualization function that plots given points, regression line and relevant statistics.
 #'
-#' @param points A dataframe of *x* and *y* coordinates to plot.
+#' @param points A \code{dataframe} of *x* and *y* coordinates to plot.
 #' 
 #' @param regression A logical parameter that plots a regression line when set to TRUE and hides it when set to FALSE. It is set to TRUE by default.
 #' 
 #' @param stats A logical parameter that displays the relevant statistics on the plot area when set to TRUE; it hides them when set to FALSE. It is set to TRUE by default.
 #' 
 #'   
-#' @return A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+#' @return A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
 #'  \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
 #'  \item{Raw slope}{The value of the slope parameter.}
 #'  \item{Correlation}{The strength of the linear relationship.}

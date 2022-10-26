@@ -2,11 +2,11 @@
 #' 
 #' Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 #'   
-#' @param points An optional dataframe of (x,y) points to plot and estimate the regression. If no points are provided, the user is free to click and create points on the plot area.
+#' @param points An optional \code{dataframe} of *x* and *y* points to plot and estimate the regression. If no \code{points} are provided, the user is free to click and create points on the plot area.
 #' 
-#' @param ... Further arguments passed to the plot_regr() function that produces the plot.
+#' @param ... Further arguments passed to the \code{plot_regr()} function that produces the plot.
 #' 
-#' @return A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+#' @return A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
 #'  \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
 #'  \item{Raw slope}{The value of the slope parameter.}
 #'  \item{Correlation}{The strength of the linear relationship.}

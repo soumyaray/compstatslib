@@ -7,14 +7,14 @@
 plot_regr(points, ...)
 }
 \arguments{
-\item{points}{A dataframe of *x* and *y* coordinates to plot.}
+\item{points}{A \code{dataframe} of *x* and *y* coordinates to plot.}
 
 \item{regression}{A logical parameter that plots a regression line when set to TRUE and hides it when set to FALSE. It is set to TRUE by default.}
 
 \item{stats}{A logical parameter that displays the relevant statistics on the plot area when set to TRUE; it hides them when set to FALSE. It is set to TRUE by default.}
 }
 \value{
-A dataframe containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
  \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
  \item{Raw slope}{The value of the slope parameter.}
  \item{Correlation}{The strength of the linear relationship.}
