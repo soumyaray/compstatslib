@@ -23,7 +23,7 @@
 #' 
 #' @seealso \code{\link{interactive_regression}}
 #' 
-#' @example 
+#' @examples
 #' points <- data.frame(x = c(1, 3, 5, 8), y = c(2, 4, 6 ,8))
 #' 
 #' plot_regr(points)
