@@ -29,7 +29,8 @@ Three types of functions are made available:
     show you a simulation of null and alternative distributions of the
     t-statistic. You will be able to play with the different parameters
     that affect hypothesis tests in order to see how their variation
-    influences the statistical power.
+    influences the null t and alternative t distributions, as well as
+    statistical power.
 
 ### Regression
 

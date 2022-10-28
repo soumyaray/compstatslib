@@ -26,6 +26,12 @@ A \code{dataframe} containing the points coordinates. Additionally, the followin
 \description{
 Non-interactive visualization function that plots given points, regression line and relevant statistics.
 }
+\examples{
+points <- data.frame(x = c(1, 3, 5, 8), y = c(2, 4, 6 ,8))
+
+plot_regr(points)
+
+}
 \seealso{
 \code{\link{interactive_regression}}
 }
