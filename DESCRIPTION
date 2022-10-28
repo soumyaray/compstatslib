@@ -10,11 +10,7 @@ Description: Collection of interactive tools and helper functions that help
   Useful for homework or in-class demonstrations.
 Imports:
   manipulate
-Enhances:
-  gpuR
-Remotes:
-  github::cdeterman/gpuR
 Depends: R (>= 3.5.0)
 License: GPL-3
 Encoding: UTF-8
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.1

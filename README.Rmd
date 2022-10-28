@@ -28,6 +28,9 @@ Three types of functions are made available:
 - **Plot functions** functions produce plots of data, distributions, or particular statistical concepts (often a non-interactive counterpart to an interactive function)
 - **Code functions** are provided as examples of code that one might want to see (they are executable, but the major value is in seeing their code)
 
+### Statistical Tests
+
+- `interactive_t_test()` Interactive visualization function that will show you a simulation of null and alternative distributions of the t-statistic. You will be able to play with the different parameters that affect hypothesis tests in order to see how their variation influences the null t and alternative t distributions, as well as statistical power.
 
 ### Regression
 

@@ -1,16 +1,40 @@
-#' interactive_regression() runs a regression simulation.
-#' Click on the plotting area to add points and see a corresponding regression line
-#'  (hitting ESC will stop the simulation). 
-#'
-#' You can supply the following parameter:
-#'   old_pts - dataframe of x,y points to start interacting with
-#'
-#' You will also see three numbers: 
-#'   intercept – where the regression line intercepts the y-axis
-#'   regression coefficient – the slope of x on y
-#'   correlation - correlation of x and y
-#'   r-squared - R^2 of y
+#' compstatslib interactive_regression() function
+#' 
+#' Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 #'   
+#' @param points An optional \code{dataframe} of *x* and *y* points to plot and estimate the regression. If no \code{points} are provided, the user is free to click and create points on the plot area.
+#' 
+#' @param ... Further arguments passed to the \code{plot_regr()} function that produces the plot.
+#' 
+#' @return A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
+#'  \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
+#'  \item{Raw slope}{The value of the slope parameter.}
+#'  \item{Correlation}{The strength of the linear relationship.}
+#'  \item{SSR}{The sum of squares regression.}
+#'  \item{SSE}{The sum of squares error.}
+#'  \item{SST}{The sum of squares total.}
+#'  \item{R-squared}{The multiple coefficient of determination.}
+#' 
+#' @usage 
+#' interactive_regression(points, ...)
+#' 
+#' Click on the plotting area to add points and see a corresponding regression line (hitting ESC will stop the simulation).
+#'
+#' @seealso \code{\link{plot_regr}}
+#' 
+#' @examples 
+#' # Selecting coordinates on the plot area, storing them in 'pts'
+#' pts <- interactive_regression()
+#' 
+#' # Replotting the points stored earlier in 'pts', allowing the user to continue the interactive regression
+#' interactive_regression(pts)
+#' 
+#' # Providing coordinates beforehand
+#' points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
+#' 
+#' # Replotting the coordinates and continuing the interactive regression
+#' interactive_regression(points)
+#'
 #' @export
 interactive_regression <- function(points=data.frame(), ...) {
   cat("Click on the plot to create data points; hit [esc] to stop")
@@ -28,48 +52,4 @@ interactive_regression <- function(points=data.frame(), ...) {
   }
   
   return(points)
-}
-
-#'#' plot_regr(points) plots given points, regression line, stats
-#'
-#' params:
-#'   points - dataframe of x,y points to plot
-#'   
-#' @export
-plot_regr <- function(points, regression=TRUE, stats=TRUE) {
-  max_x <- 50
-  if (nrow(points) == 0) {
-    plot(NA, xlim=c(-5,max_x), ylim=c(-5,max_x), xlab="x", ylab="y")
-    return()
-  }
-  plot(points, xlim=c(-5,max_x), ylim=c(-5,max_x), pch=19, cex=2, col="gray")
-  if (nrow(points) < 2) return()
-  
-  if (regression) {
-    mean_x <- mean(points$x)
-    mean_y <- mean(points$y)
-    segments(0, mean_y, max_x, mean_y, lwd=1, col="lightgray", lty="dotted")
-    segments(mean_x, 0, mean_x, mean_y, lwd=1, col="lightgray", lty="dotted")
-    regr <- lm(points$y ~ points$x)
-    abline(regr, lwd=2, col="cornflowerblue")
-    
-    if (stats) {  
-      regr_summary <- summary(regr)
-      ssr <- sum((regr$fitted.values - mean(points$y))^2)
-      sse <- sum((points$y - regr$fitted.values)^2)
-      sst <- sum((points$y - mean(points$y))^2)
-      
-      par(family="mono")
-      legend("topleft", legend = c(
-        paste(" Raw intercept: ", round(regr$coefficients[1], 2), "\n",
-              "Raw slope    : ", round(regr$coefficients[2], 2), "\n",
-              "Correlation  : ", round(cor(points$x, points$y), 2), "\n",
-              "SSR          : ", round(ssr, 2), "\n",
-              "SSE          : ", round(sse, 2), "\n",
-              "SST          : ", round(sst, 2), "\n",
-              "R-squared    : ", round(regr_summary$r.squared, 2))),
-        bty="n")
-      par(family="sans")
-    }
-  }
 }
