@@ -2,10 +2,13 @@
 % Please edit documentation in R/precision.R
 \name{machine_precision}
 \alias{machine_precision}
-\title{Reports smallest possible number on machine such that 1 + x != 1}
+\title{compstatslib machine_precision() function}
 \usage{
 machine_precision()
 }
+\value{
+A numeric value representing the smallest possible number that the user's computer can effectively represent.
+}
 \description{
-Reports smallest possible number on machine such that 1 + x != 1
+Code function that reports the smallest possible number on the user's machine such that 1 + x != 1.
 }
