@@ -14,3 +14,6 @@ Depends: R (>= 4.0.0)
 License: MIT
 Encoding: UTF-8
 RoxygenNote: 7.2.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
