@@ -7,8 +7,9 @@
 <!-- badges: end -->
 
 This R Package is a collection of interactive tools and helper functions
-that help teachers and students learn concepts in computational
-statistics. Useful for homework or in-class demonstrations.
+that help teachers and learners learn concepts in computational
+statistics. Useful for homework, in-class demonstrations, or
+self-learning.
 
 ## Major Functions
 
@@ -32,7 +33,7 @@ Three types of functions are made available:
     influences the null t and alternative t distributions, as well as
     statistical power.
 
-### Regression
+### Linear Regression
 
 -   `interactive_regression()` Interactive visualization function that
     lets you point-and-click to add data points, while it automatically
@@ -40,6 +41,15 @@ Three types of functions are made available:
 -   `plot_regr()` Non-interactive function that takes a dataframe of
     points (x, y) and plots them with a regression line and associated
     statistics.
+
+### Logistic Regression
+
+-   `interactive_logit()` Interactive visualization function that lets
+    you point-and-click to add data points, while it automatically plots
+    and updates a logistic regression line and associated statistics.
+-   `plot_logit()` Non-interactive function that takes a dataframe of
+    points (x, y) and plots them with a logistic regression curve and
+    associated statistics.
 
 ### Principal Components Analysis
 
@@ -58,20 +68,11 @@ Three types of functions are made available:
     to *manipulate* a matrix inversion.
 -   `visualize_inverse()` Non-interactive plotting function that helps
     visual an inverse.
--   `gpu_demo()` Code function that demonstrates how to do matrix
-    multiplication using the GPU, and benchmarks difference against CPU
-    matrix multiplication.
 
 ## Installation
 
-You can install the released version of compstatslib from
-[CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("compstatslib")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+You can install the current development version from
+[GitHub](https://github.com/) using the `devtools` package:
 
 ``` r
 # install.packages("devtools")
