@@ -34,8 +34,8 @@
 #' interactive_logit(pts)
 #'
 #' # Providing coordinates beforehand
-#' pts <- data.frame(in = c(1, 4, 7, 10), out = c(0, 0, 1, 1))
-#' interactive_regression(pts, formula = out ~ in)
+#' mydata <- data.frame(in = c(1, 4, 7, 10), out = c(0, 0, 1, 1))
+#' interactive_regression(mydata, formula = out ~ in)
 #'
 #' @export
 interactive_logit <- function(points = data.frame(), formula = y ~ x,

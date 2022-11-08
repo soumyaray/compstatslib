@@ -4,7 +4,7 @@
 \alias{plot_logit}
 \title{compstatslib plot_logit() function}
 \usage{
-plot_regr(points, ...)
+plot_logit(points, ...)
 }
 \arguments{
 \item{points}{A \code{dataframe} of *x* and *y* coordinates to plot.}
@@ -30,11 +30,8 @@ Non-interactive visualization function that plots given points,
 logistic regression line and relevant statistics.
 }
 \examples{
-pts <- data.frame(x = c(1, 3, 5, 8), y = c(2, 4, 6 ,8))
-plot_regr(pts, formula = y ~ x)
-
-names(pts) <- c("input", "output")
-plot_regr(pts, formula = output ~ input)
+mydata <- data.frame(iv = c(-6, -3, 1, 3, 5, 8), dv = c(0, 0, 0, 1, 1 ,1))
+plot_logit(mydata, formula = dv ~ iv)
 
 }
 \seealso{

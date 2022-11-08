@@ -8,7 +8,7 @@
 #' @param formula A \code{formula} to use in estimating logit
 #' (e.g., \code{y ~ x}).
 #'
-#' @param regression Logical parameter of whether to plot a regression line 
+#' @param regression Logical parameter of whether to plot a regression line
 #' (TRUE by default)
 #'
 #' @param stats Logical parameter of whether to display relevant statistics on
@@ -21,20 +21,17 @@
 #' @return A \code{dataframe} containing the points coordinates.
 #'
 #' @usage
-#' plot_regr(points, ...)
+#' plot_logit(points, ...)
 #'
 #' @seealso \code{\link{interactive_regression}}
 #'
 #' @examples
-#' pts <- data.frame(x = c(1, 3, 5, 8), y = c(2, 4, 6 ,8))
-#' plot_regr(pts, formula = y ~ x)
-#'
-#' names(pts) <- c("input", "output")
-#' plot_regr(pts, formula = output ~ input)
+#' mydata <- data.frame(iv = c(-6, -3, 1, 3, 5, 8), dv = c(0, 0, 0, 1, 1 ,1))
+#' plot_logit(mydata, formula = dv ~ iv)
 #'
 #' @export
 plot_logit <- function(points, formula = y ~ x, regression = TRUE, stats = TRUE,
-                       min_x = 0, max_x = 50, legend_loc = "topleft") {
+                       min_x = 0, max_x = 1, legend_loc = "topleft") {
   # Blank plotting figure if no data yet
   if (nrow(points) == 0) {
     plot_points_logit(NA, min_x, max_x)
@@ -43,10 +40,14 @@ plot_logit <- function(points, formula = y ~ x, regression = TRUE, stats = TRUE,
 
   y_name <- as.character(formula[[2]])
   x_name <- as.character(formula[[3]])
-  if (nrow(points) > 0) max_x <- max(max_x, points[[x_name]])
+
+  if (nrow(points) > 0) {
+    max_x <- max(max_x, points[[x_name]])
+    min_x <- min(min_x, points[[x_name]])
+  }
 
   # Plot points
-  plot_points_logit(points, min_x, max_x)
+  compstatslib:::plot_points_logit(points, min_x, max_x)
 
   if (nrow(points) < 2) return()
 
