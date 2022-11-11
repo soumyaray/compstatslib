@@ -14,9 +14,11 @@
 #' @param stats Logical parameter of whether to display relevant statistics on
 #' the plot area (TRUE by default).
 #' The following parameters are provided on the plot area:
-#'  intercept of the logistic regression;
-#'  coefficient of the independent variable;
-#'  AIC (Akaike information criterion).
+#' \enumerate{
+#'  \item{Intercept}{The intercept of the logistic regression.}
+#'  \item{Coefficient}{The coefficient of the independent variable.}
+#'  \item{AIC}{An information theoretic fit criterion.}
+#' }
 #'
 #' @return A \code{dataframe} containing the points coordinates.
 #'
