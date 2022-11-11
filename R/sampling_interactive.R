@@ -1,7 +1,22 @@
-#' @example
-#' # pop = rnorm(100000)
-#' # interactive_sampling(pop)
-#' # interactive_sampling(c(rnorm(100000, mean = 4), rnorm(100000, mean=-4)), theta = mean)
+#' commpstatslib interactive_sampling() function
+#' 
+#' Interactive visualization to sample from a population and see how a given sampling statistic (theta) is distributed.
+#' 
+#' @param population A \code{vector} of values following any population distribution you wish to simulate.
+#' @param sample_size The size of each sample to draw from the population
+#' @param theta The \code{function} that computes the statistic of interest from each sample (e.g., \code{mean} or \code{median}).
+#' 
+#' @usage 
+#' interactive_sampling()
+#' 
+#' After running, click on the gears in the top-left of the plotting area to draw more samples or change simulation parameters.
+#'
+#' @examples
+#' \dontrun{
+#' interactive_sampling(rnorm(100000))
+#' 
+#' interactive_sampling(c(rnorm(100000, mean = 4), rnorm(100000, mean=-4)), theta = median)
+#' }
 #' @export
 interactive_sampling <- function(population, sample_size = 10, theta = mean) {
   plot_cache <- NULL
@@ -16,68 +31,4 @@ interactive_sampling <- function(population, sample_size = 10, theta = mean) {
   cat("Use the gears icon (top-left of plot) to draw another set of samples.\n")
   cat("Set the size of each of each sample (sample_size) drawn.\n")
   cat("Choose how many repetitions (reps) of each sample should be drawn.\n")
-}
-
-plot_sampling <- function(population, sample_size, theta, reps = 1,
-                          vars = NULL, replot_population = TRUE) {
-  if (!is.null(vars)) {
-    xmin <- vars$xmin
-    xmax <- vars$xmax
-    sample_means <- vars$sample_means
-  } else {
-    xmin <- min(population)
-    xmax <- max(population)
-    sample_means <- c()
-  }
-
-  # Preplotting computations needed on each plot
-  samples <- replicate(reps, sample(population, sample_size))
-  means <- apply(samples, FUN = theta, MARGIN = 2)
-  sample_means <- append(sample_means, means)
-  popd <- density(population)
-  samd <- density(samples)
-
-  old_par <- par(mfrow = c(3, 1), mar=c(2, 2, 1, 1), cex=0.5)
-
-  plot(popd, lty = "dotted", lwd = 2, xlim = c(xmin, xmax), xaxt = "n",
-       yaxt = "n", frame = FALSE, main = NA)
-  axis(1)
-  text(xmin, max(popd$y)/2, boldly("Population Distribution"), adj = 0)
-
-  plot(samd, lty = "solid", lwd = 2, xlim = c(xmin, xmax), xaxt = "n",
-       yaxt = "n", frame = FALSE, main = NA)
-  apply(samples, MARGIN=2, \(s) { 
-    lines(density(s), lty = "solid", col=rgb(0.7, 0.7, 0.7, 0.5), lwd = 1) })
-  lines(samd, lty = "solid", lwd = 2)
-  
-  axis(1)
-  text(xmin, max(samd$y)/2, boldly("Sample Distribution"), adj = 0)
-
-  # TODO: allow user to fix bin size
-  # TODO: use some fraction of population hist height
-  # if (length(sample_means) < 3) { breaks <- "Sturges" } else { breaks <- "FD" }
-  samh <- hist(sample_means, border = FALSE,
-               xlim = c(xmin, xmax), xaxt = "n", yaxt = "n", main = NA)
-  axis(1)
-  means_count <- paste("Sampling Means", "\n(", length(sample_means), ")")
-  text(xmin, max(samh$counts)/2, means_count, adj = 0)
-
-  par(old_par)
-
-  vars <- list(
-    population = population,
-    xmin = xmin,
-    xmax = xmax,
-    sample_size = sample_size,
-    theta = theta,
-    sample_means = sample_means
-  )
-
-  class(vars) <- append(class(vars), c("compstats", "sampling"))
-
-  vars
-}
-
-boldly <- function(str) {
-  substitute(paste(bold(str)))
 }
