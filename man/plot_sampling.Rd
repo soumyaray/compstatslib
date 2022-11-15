@@ -14,7 +14,7 @@ plot_sampling()
 \item{theta}{The \code{function} that computes the statistic of interest from each sample (e.g., \code{mean} or \code{median}).}
 }
 \value{
-A \code{list} containing the population data, sample means, and other information of interest
+A \code{list} containing the population data, sample statistics, and other information of interest
 }
 \description{
 Plot distribution of a population, samples drawn from the population, given sampling statistic.
