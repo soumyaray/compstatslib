@@ -6,7 +6,7 @@
 #' @param sample_size The size of each sample to draw from the population
 #' @param theta The \code{function} that computes the statistic of interest from each sample (e.g., \code{mean} or \code{median}).
 #' 
-#' @return A \code{list} containing the population data, sample means, and other information of interest
+#' @return A \code{list} containing the population data, sample statistics, and other information of interest
 #' 
 #' @usage 
 #' plot_sampling()
@@ -22,17 +22,17 @@ plot_sampling <- function(population, sample_size, theta, reps = 1,
   if (!is.null(vars)) {
     xmin <- vars$xmin
     xmax <- vars$xmax
-    sample_means <- vars$sample_means
+    sample_theta <- vars$sample_theta
   } else {
     xmin <- min(population)
     xmax <- max(population)
-    sample_means <- c()
+    sample_theta <- c()
   }
   
   # Preplotting computations needed on each plot
   samples <- replicate(reps, sample(population, sample_size))
-  means <- apply(samples, FUN = theta, MARGIN = 2)
-  sample_means <- append(sample_means, means)
+  reps_theta <- apply(samples, FUN = theta, MARGIN = 2)
+  sample_theta <- append(sample_theta, reps_theta)
   popd <- density(population)
   samd <- density(samples)
   
@@ -54,12 +54,12 @@ plot_sampling <- function(population, sample_size, theta, reps = 1,
   
   # TODO: allow user to fix bin size
   # TODO: use some fraction of population hist height
-  # if (length(sample_means) < 3) { breaks <- "Sturges" } else { breaks <- "FD" }
-  samh <- hist(sample_means, border = FALSE,
+  # if (length(sample_theta) < 3) { breaks <- "Sturges" } else { breaks <- "FD" }
+  samh <- hist(sample_theta, border = FALSE,
                xlim = c(xmin, xmax), xaxt = "n", yaxt = "n", main = NA)
   axis(1)
-  means_count <- paste("Sampling Means", "\n(", length(sample_means), ")")
-  text(xmin, max(samh$counts)/2, means_count, adj = 0)
+  theta_count <- paste("Sampling Statistic", "\n(", length(sample_theta), ")")
+  text(xmin, max(samh$counts)/2, theta_count, adj = 0)
   
   par(old_par)
   
@@ -69,7 +69,7 @@ plot_sampling <- function(population, sample_size, theta, reps = 1,
     xmax = xmax,
     sample_size = sample_size,
     theta = theta,
-    sample_means = sample_means
+    sample_theta = sample_theta
   )
   
   class(vars) <- append(class(vars), c("compstats", "sampling"))
