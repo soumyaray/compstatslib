@@ -16,13 +16,39 @@
 #' @export
 interactive_t_test <- function() {
   manipulate::manipulate(
-    t_test_plot(diff, sd, n, alpha),
+    plot_t_test(diff, sd, n, alpha),
     diff  = manipulate::slider(0, 4, step = 0.1, initial = 0.5),
     sd    = manipulate::slider(1, 5, step = 0.1, initial = 4),
     n     = manipulate::slider(2, 500, step = 1, initial = 100),
     alpha = manipulate::slider(0.01, 0.1, step = 0.01, initial = 0.05)
   )
-} 
+}
+
+#' compstatslib plot_t_test() function
+#' 
+#' Non-interactive visualization function that plots null and alternative
+#' t distributions of a t-test. Shows rejection zone and power as areas
+#' under the curves.
+#' 
+#' @param diff The test difference (defaults to 0.5).
+#' @param sd Population standard deviation (defaults to 4).
+#' @param n Sample size (defaults to 100).
+#' @param alpha Significance level (defaults to 0.05).
+#' 
+#' @usage
+#' plot_t_test()
+#' 
+#' @examples
+#' plot_t_test()
+#' plot_t_test(diff=-0.1, sd=3)
+#' 
+#' @export
+plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
+  df <- n - 1
+  t <- diff / (sd / sqrt(n))
+  t_null_plot(df, alpha)
+  t_alt_lines(df, t, alpha)
+}
 
 # Plot a distribution
 plotdist <- function(xseq, xdens, col, xlim, type, lty, lwd, segments=NULL, qlty, qcol, polyfill=NULL) {
@@ -81,11 +107,4 @@ t_alt_lines <- function(df, ncp=0, alpha) {
   quants <- c(0.5)
   power_quant <- pt(qt(1-alpha, df=df), df=df, ncp=ncp)
   plott(df=df, ncp=ncp, type='lines', lty="dashed", col=blue, quants=quants, qcol=lightblue, xlim=c(-6, 6), fill_quants=c(power_quant, 0.999))
-}
-
-t_test_plot <- function(diff, sd, n, alpha) {
-  df=n-1
-  t = diff/(sd/sqrt(n))
-  t_null_plot(df, alpha)
-  t_alt_lines(df,t, alpha)
 }
