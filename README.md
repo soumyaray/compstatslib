@@ -32,12 +32,19 @@ Three types of functions are made available:
   that affect hypothesis tests in order to see how their variation
   influences the null t and alternative t distributions, as well as
   statistical power.
+- `plot_t_test()` Non-interactive function that takes values necessary
+  to do a t-test and visualizes the null and alternative t-statistic
+  distributions. It shows rejection zone and power as areas under the
+  curves.
 
 ### Statistical Sampling
 
 - `interactive_sampling()` Interactive sampling simulation that will
   sample given population data to show how a sampling statistic is
   distributed across repetitions of sampling exercise.
+- `plot_sampling()` Non-interactive function that plots distribution of
+  a population, samples drawn from the population, given sampling
+  statistic.
 
 ### Linear Regression
 
@@ -72,8 +79,8 @@ Three types of functions are made available:
 
 - `interactive_matrix_inverse()` Interactive function that allows one to
   *manipulate* a matrix inversion.
-- `visualize_inverse()` Non-interactive plotting function that helps
-  visual an inverse.
+- `plot_matrix_inverse()` Non-interactive plotting function that helps
+  visualize an inverse.
 
 ## Installation
 
