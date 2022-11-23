@@ -33,4 +33,11 @@ test_that("Plotting sampling simulation should not produce errors", {
     NA)
 })
 
+# Inverse matrix plotting
+test_that("Plotting sampling simulation should not produce errors", {
+  expect_error(
+    plot_matrix_inverse())
+})
+
+
 unlink("Rplots.pdf")
