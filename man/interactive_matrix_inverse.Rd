@@ -29,5 +29,5 @@ Interactive function that allows one to *manipulate* a matrix inversion.
 Inspired by: \link{https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830?newreg=d55776428dd2418e8a6a971dfdbfa17}
 }
 \seealso{
-\code{\link{visualize inverse}}
+\code{\link{plot_matrix_inverse}}
 }

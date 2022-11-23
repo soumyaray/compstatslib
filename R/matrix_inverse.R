@@ -22,20 +22,20 @@
 #' After running the function, the user can click on the gear icon in the top-left corner of the plot area.
 #' A window with four slider bars will pop up, allowing the user to change the value of the 4 parameters.
 #' 
-#' @seealso \code{\link{visualize inverse}}
+#' @seealso \code{\link{plot_matrix_inverse}}
 #'
 #' @export
 interactive_matrix_inverse <- function(x1_init=1, y1_init=2, x2_init=2, y2_init=1) {
   library(manipulate)
   
-  manipulate(visualize_inverse(x1, y1, x2, y2),
+  manipulate(plot_matrix_inverse(x1, y1, x2, y2),
              x1 = slider(min=-2, max=2, initial=x1_init, step=0.1),
              y1 = slider(min=-2, max=2, initial=y1_init, step=0.1),
              x2 = slider(min=-2, max=2, initial=x2_init, step=0.1),
              y2 = slider(min=-2, max=2, initial=y2_init, step=0.1))
 }
 
-#' compstatslib visualize_inverse() function
+#' compstatslib plot_matrix_inverse() function
 #' 
 #' Non-interactive plotting function that helps visualize an inverse.
 #' 
@@ -48,14 +48,14 @@ interactive_matrix_inverse <- function(x1_init=1, y1_init=2, x2_init=2, y2_init=
 #' @param y2 The second row (or column) vector of the inverse matrix A^(-1).
 #' 
 #' @usage 
-#' visualize_inverse(x1, y1, x2, y2)
+#' plot_matrix_inverse(x1, y1, x2, y2)
 #' 
 #' The user can choose the magnitude of the vectors, which will be graphically represented by the function.
 #'
 #' @seealso \code{\link{interactive_matrix_inverse}}
 #'
 #' @export
-visualize_inverse <- function(x1, y1, x2, y2) {
+plot_matrix_inverse <- function(x1, y1, x2, y2) {
   A <- matrix(c(x1, y1, x2, y2), nrow = 2)
   Ainv <- solve(A)
   
