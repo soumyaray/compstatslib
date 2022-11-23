@@ -72,7 +72,7 @@ Three types of functions are made available:
 
 - `interactive_matrix_inverse()` Interactive function that allows one to
   *manipulate* a matrix inversion.
-- `plot_matrix__inverse()` Non-interactive plotting function that helps
+- `plot_matrix_inverse()` Non-interactive plotting function that helps
   visualize an inverse.
 
 ## Installation
