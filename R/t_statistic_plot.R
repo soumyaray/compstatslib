@@ -44,6 +44,17 @@ plotdist <- function(xseq, xdens, col, xlim, type, lty, lwd, segments=NULL, qlty
   lines(xseq, xdens, type="l", lwd=lwd, col=col, lty=lty)
 }
 
+# Plot the error matrix
+recttext <- function(xl, yb, xr, yt, text, rectArgs = NULL, textArgs = NULL) {
+  center <- c(mean(c(xl, xr)), mean(c(yb, yt)))
+  do.call('rect', c(list(xleft = xl, ybottom = yb, xright = xr, ytop = yt), rectArgs))
+  do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
+}
+
+plot_error_matrix <- function() {
+
+}
+
 # Plot the t distribution
 plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), type="plot", lty="solid", quants=NULL, qlty="solid", qcol=rgb(0.30,0.50,0.75, 0.5), fill_quants=NULL) {
   xseq = seq(ncp-6, ncp+6, length=1000)
