@@ -45,20 +45,33 @@ plotdist <- function(xseq, xdens, col, xlim, type, lty, lwd, segments=NULL, qlty
 }
 
 # Plot the error matrix
-recttext <- function(xl, yb, xr, yt, text, rectArgs = NULL, textArgs = NULL) {
+recttext <- function(xl, yb, xr, yt, titl, text, rectArgs = NULL,
+                     titleArgs = NULL, textArgs = NULL) {
+  title_text <- c(mean(c(xl, xr)), yt - 0.015)
   center <- c(mean(c(xl, xr)), mean(c(yb, yt)))
   do.call('rect', c(list(xleft = xl, ybottom = yb, xright = xr, ytop = yt), rectArgs))
+  do.call('text', c(list(x = title_text[1], y = title_text[2], labels = titl),
+                    titleArgs))
   do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
 }
 
 plot_error_matrix <- function() {
-
+  text(x = -5.5, y = 0.4, "Text inside plot")
+  # Need to know:
+  # How to plot words within plot area interval
+  # 
+  
+  # - Type I error
+  # - Type II error
+  # - 1 - alpha
+  # - 1 - beta
 }
 
 # Plot the t distribution
 plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), type="plot", lty="solid", quants=NULL, qlty="solid", qcol=rgb(0.30,0.50,0.75, 0.5), fill_quants=NULL) {
   xseq = seq(ncp-6, ncp+6, length=1000)
   xdens = dt(xseq, ncp=ncp, df=df)
+  
   if (length(xlim) == 0) {
     xlim = c(ncp-3.5, ncp+3.5)
   }
@@ -82,6 +95,28 @@ plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), t
   }
   
   plotdist(xseq, xdens, col, xlim, type, lty, lwd, segments, qlty, qcol, polyfill)
+  
+  # MY TESTING_MY TESTING
+  # Top-left square
+  recttext(-5.5, 0.275, -4, 0.4, titl = "Type I error", text = "alpha",
+           titleArgs = list(col = "black", cex = 0.6),
+           textArgs = list(col = "black", cex = 0.75))
+  # Top-right square
+  recttext(-4, 0.275, -2.5, 0.4, titl = "Correct!", text = "1 - beta",
+           titleArgs = list(col = "black", cex = 0.6),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Bottom-left square
+  recttext(-5.5, 0.150, -4, 0.275, titl = "Correct!", text = "1 - alpha",
+           titleArgs = list(col = "black", cex = 0.6),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Bottom-right square
+  recttext(-4, 0.150, -2.5, 0.275, titl = "Correct!", text = "beta",
+           titleArgs = list(col = "black", cex = 0.6),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # END_TESTING
 }
 
 t_null_plot <- function(df, alpha) {
