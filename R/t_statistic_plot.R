@@ -28,6 +28,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   # MY TESTING_MY TESTING
   # Top-left square
   recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
+           rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
            left_cap = "If evidence \nsays REJECT \nnull \nhypothesis",
            leftcapArgs = list(cex = 0.4, srt = 90),
            top_cap = "If null is \nREALLY true",
@@ -38,6 +39,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   
   # Top-right square
   recttext(xl = -4, yb =0.25, xr = -2.5, yt = 0.375,
+           rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
            top_cap = "If null is \nREALLY false",
            topcapArgs = list(cex = 0.5),
            titl = "Correct!", text = round((1 - power_quant), 2),
@@ -46,6 +48,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   
   # Bottom-left square
   recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
+           rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
            left_cap = "If evidence \nsays CANNOT \nREJECT null \nhypothesis",
            leftcapArgs = list(cex = 0.4, srt = 90),
            titl = "Correct!", text = 1 - alpha,
@@ -54,6 +57,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   
   # Bottom-right square
   recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Type II error", 
+           rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
            text = round(power_quant, 2),
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
