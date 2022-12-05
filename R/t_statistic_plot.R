@@ -24,6 +24,41 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   t <- diff / (sd / sqrt(n))
   t_null_plot(df, alpha)
   t_alt_lines(df, t, alpha)
+  
+  # MY TESTING_MY TESTING
+  # Top-left square
+  recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
+           left_cap = "If evidence \nsays REJECT \nnull \nhypothesis",
+           leftcapArgs = list(cex = 0.4, srt = 90),
+           top_cap = "If null is \nREALLY true",
+           topcapArgs = list(cex = 0.5),
+           titl = "Type I error", text = alpha,
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Top-right square
+  recttext(xl = -4, yb =0.25, xr = -2.5, yt = 0.375,
+           top_cap = "If null is \nREALLY false",
+           topcapArgs = list(cex = 0.5),
+           titl = "Correct!", text = round((1 - power_quant), 2),
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Bottom-left square
+  recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
+           left_cap = "If evidence \nsays CANNOT \nREJECT null \nhypothesis",
+           leftcapArgs = list(cex = 0.4, srt = 90),
+           titl = "Correct!", text = 1 - alpha,
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Bottom-right square
+  recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Type II error", 
+           text = round(power_quant, 2),
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # END_TESTING
 }
 
 # Plot a distribution
@@ -42,36 +77,6 @@ plotdist <- function(xseq, xdens, col, xlim, type, lty, lwd, segments=NULL, qlty
   }
   
   lines(xseq, xdens, type="l", lwd=lwd, col=col, lty=lty)
-}
-
-# Plot the error matrix
-recttext <- function(xl, yb, xr, yt, left_cap = NULL, top_cap = NULL, titl = NULL,
-                     text = NULL, rectArgs = NULL, leftcapArgs = NULL, 
-                     topcapArgs = NULL, titleArgs = NULL, textArgs = NULL) {
-  left_cap_text <- c(xl - 0.4, mean(c(yb, yt)))
-  top_cap_text <- c(mean(c(xl, xr)), yt + 0.02)
-  title_text <- c(mean(c(xl, xr)), yt - 0.015)
-  center <- c(mean(c(xl, xr)), mean(c(yb, yt)))
-  do.call('rect', c(list(xleft = xl, ybottom = yb, xright = xr, ytop = yt), rectArgs))
-  do.call('text', c(list(x = left_cap_text[1], y = left_cap_text[2], 
-                         labels = left_cap), leftcapArgs))
-  do.call('text', c(list(x = top_cap_text[1], y = top_cap_text[2], 
-                         labels = top_cap), topcapArgs))
-  do.call('text', c(list(x = title_text[1], y = title_text[2], labels = titl),
-                    titleArgs))
-  do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
-}
-
-plot_error_matrix <- function() {
-  text(x = -5.5, y = 0.4, "Text inside plot")
-  # Need to know:
-  # How to plot words within plot area interval
-  # 
-  
-  # - Type I error
-  # - Type II error
-  # - 1 - alpha
-  # - 1 - beta
 }
 
 # Plot the t distribution
@@ -103,39 +108,6 @@ plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), t
   
   plotdist(xseq, xdens, col, xlim, type, lty, lwd, segments, qlty, qcol, polyfill)
   
-  # MY TESTING_MY TESTING
-  # Top-left square
-  recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
-           left_cap = "If evidence \nsays REJECT \nnull \nhypothesis",
-           leftcapArgs = list(cex = 0.4, srt = 90),
-           top_cap = "If null is \nREALLY true",
-           topcapArgs = list(cex = 0.5),
-           titl = "Type I error", text = "alpha",
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # Top-right square
-  recttext(xl = -4, yb =0.25, xr = -2.5, yt = 0.375,
-           top_cap = "If null is \nREALLY false",
-           topcapArgs = list(cex = 0.5),
-           titl = "Correct!", text = "1 - beta",
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # Bottom-left square
-  recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
-           left_cap = "If evidence \nsays CANNOT \nREJECT null \nhypothesis",
-           leftcapArgs = list(cex = 0.4, srt = 90),
-           titl = "Correct!", text = "1 - alpha",
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # Bottom-right square
-  recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Correct!", text = "beta",
-           titleArgs = list(col = "black", cex = 0.6),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # END_TESTING
 }
 
 t_null_plot <- function(df, alpha) {
@@ -146,6 +118,25 @@ t_alt_lines <- function(df, ncp=0, alpha) {
   blue <- rgb(0.1, 0.1, 0.75)
   lightblue <- rgb(0.4, 0.4, 1, 0.3)
   quants <- c(0.5)
-  power_quant <- pt(qt(1-alpha, df=df), df=df, ncp=ncp)
+  power_quant <<- pt(qt(1-alpha, df=df), df=df, ncp=ncp)
   plott(df=df, ncp=ncp, type='lines', lty="dashed", col=blue, quants=quants, qcol=lightblue, xlim=c(-6, 6), fill_quants=c(power_quant, 0.999))
+}
+
+# Plot the error matrix
+recttext <- function(xl, yb, xr, yt, pwr_qnt, left_cap = NULL, top_cap = NULL, titl = NULL,
+                     text = NULL, rectArgs = NULL, leftcapArgs = NULL, 
+                     topcapArgs = NULL, titleArgs = NULL, textArgs = NULL) {
+  left_cap_text <- c(xl - 0.4, mean(c(yb, yt)))
+  top_cap_text <- c(mean(c(xl, xr)), yt + 0.02)
+  title_text <- c(mean(c(xl, xr)), yt - 0.015)
+  center <- c(mean(c(xl, xr)), mean(c(yb, yt)))
+
+  do.call('rect', c(list(xleft = xl, ybottom = yb, xright = xr, ytop = yt), rectArgs))
+  do.call('text', c(list(x = left_cap_text[1], y = left_cap_text[2], 
+                         labels = left_cap), leftcapArgs))
+  do.call('text', c(list(x = top_cap_text[1], y = top_cap_text[2], 
+                         labels = top_cap), topcapArgs))
+  do.call('text', c(list(x = title_text[1], y = title_text[2], labels = titl),
+                    titleArgs))
+  do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
 }
