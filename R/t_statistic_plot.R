@@ -30,7 +30,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
            rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
            left_cap = "If evidence \nsays REJECT \nnull \nhypothesis",
-           leftcapArgs = list(cex = 0.4, srt = 90),
+           leftcapArgs = list(cex = 0.5, srt = 90),
            top_cap = "If null is \nREALLY true",
            topcapArgs = list(cex = 0.5),
            titl = "Type I error", text = alpha,
@@ -50,7 +50,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
            rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
            left_cap = "If evidence \nsays CANNOT \nREJECT null \nhypothesis",
-           leftcapArgs = list(cex = 0.4, srt = 90),
+           leftcapArgs = list(cex = 0.5, srt = 90),
            titl = "Correct!", text = 1 - alpha,
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
@@ -130,7 +130,7 @@ t_alt_lines <- function(df, ncp=0, alpha) {
 recttext <- function(xl, yb, xr, yt, pwr_qnt, left_cap = NULL, top_cap = NULL, titl = NULL,
                      text = NULL, rectArgs = NULL, leftcapArgs = NULL, 
                      topcapArgs = NULL, titleArgs = NULL, textArgs = NULL) {
-  left_cap_text <- c(xl - 0.4, mean(c(yb, yt)))
+  left_cap_text <- c(xl - 0.45, mean(c(yb, yt)))
   top_cap_text <- c(mean(c(xl, xr)), yt + 0.02)
   title_text <- c(mean(c(xl, xr)), yt - 0.015)
   center <- c(mean(c(xl, xr)), mean(c(yb, yt)))
