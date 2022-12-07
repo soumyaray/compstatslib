@@ -19,7 +19,7 @@
 #' @seealso \code{\link{interactive_t_test}}
 #' 
 #' @export
-plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
+plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05, error_matrix) {
   df <- n - 1
   t <- diff / (sd / sqrt(n))
   t_null_plot(df, alpha)
@@ -27,44 +27,9 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   
   alt_stats <- t_alt_lines(df, t, alpha)
   
-  # MY TESTING_MY TESTING
-  # Top-left square
-  recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
-           rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
-           left_cap = "If evidence says \nREJECT \nnull hypothesis",
-           leftcapArgs = list(cex = 0.45, srt = 90),
-           top_cap = "If null is \nreally TRUE",
-           topcapArgs = list(cex = 0.5),
-           titl = "Type I error", text = alpha,
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # Top-right square
-  recttext(xl = -4, yb =0.25, xr = -2.5, yt = 0.375,
-           rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
-           top_cap = "If null is \nreally FALSE",
-           topcapArgs = list(cex = 0.5),
-           titl = "Correct!", text = round((alt_stats[2]), 2),
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # Bottom-left square
-  recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
-           rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
-           left_cap = "If evidence says \nCANNOT REJECT \nnull hypothesis",
-           leftcapArgs = list(cex = 0.45, srt = 90),
-           titl = "Correct!", text = 1 - alpha,
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # Bottom-right square
-  recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Type II error", 
-           rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
-           text = round(alt_stats[1], 2),
-           titleArgs = list(col = "black", cex = 0.5),
-           textArgs = list(col = "black", cex = 0.75))
-  
-  # END_TESTING
+  if(error_matrix == TRUE) {
+    plot_error_matrix(alpha, alt_stats)
+  }
 }
 
 # Plot a distribution
@@ -148,3 +113,43 @@ recttext <- function(xl, yb, xr, yt, pwr_qnt, left_cap = NULL, top_cap = NULL, t
                     titleArgs))
   do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
 }
+
+plot_error_matrix <- function(alpha, alt_stats) {
+  # Top-left square
+  recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
+           rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
+           left_cap = "If evidence says \nREJECT \nnull hypothesis",
+           leftcapArgs = list(cex = 0.45, srt = 90),
+           top_cap = "If null is \nreally TRUE",
+           topcapArgs = list(cex = 0.5),
+           titl = "Type I error", text = alpha,
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Top-right square
+  recttext(xl = -4, yb =0.25, xr = -2.5, yt = 0.375,
+           rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
+           top_cap = "If null is \nreally FALSE",
+           topcapArgs = list(cex = 0.5),
+           titl = "Correct!", text = round((alt_stats[2]), 2),
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Bottom-left square
+  recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
+           rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
+           left_cap = "If evidence says \nCANNOT REJECT \nnull hypothesis",
+           leftcapArgs = list(cex = 0.45, srt = 90),
+           titl = "Correct!", text = 1 - alpha,
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  
+  # Bottom-right square
+  recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Type II error", 
+           rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
+           text = round(alt_stats[1], 2),
+           titleArgs = list(col = "black", cex = 0.5),
+           textArgs = list(col = "black", cex = 0.75))
+  # END_TESTING
+}
+
