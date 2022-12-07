@@ -25,6 +25,8 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   t_null_plot(df, alpha)
   t_alt_lines(df, t, alpha)
   
+  alt_stats <- t_alt_lines(df, t, alpha)
+  
   # MY TESTING_MY TESTING
   # Top-left square
   recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
@@ -42,7 +44,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
            rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
            top_cap = "If null is \nreally FALSE",
            topcapArgs = list(cex = 0.5),
-           titl = "Correct!", text = round((1 - power_quant), 2),
+           titl = "Correct!", text = round((alt_stats[2]), 2),
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
   
@@ -58,7 +60,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   # Bottom-right square
   recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Type II error", 
            rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
-           text = round(power_quant, 2),
+           text = round(alt_stats[1], 2),
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
   
@@ -122,8 +124,10 @@ t_alt_lines <- function(df, ncp=0, alpha) {
   blue <- rgb(0.1, 0.1, 0.75)
   lightblue <- rgb(0.4, 0.4, 1, 0.3)
   quants <- c(0.5)
-  power_quant <<- pt(qt(1-alpha, df=df), df=df, ncp=ncp)
-  plott(df=df, ncp=ncp, type='lines', lty="dashed", col=blue, quants=quants, qcol=lightblue, xlim=c(-6, 6), fill_quants=c(power_quant, 0.999))
+  beta <- pt(qt(1-alpha, df=df), df=df, ncp=ncp)
+  one_minus_beta <- 1 - beta
+  plott(df=df, ncp=ncp, type='lines', lty="dashed", col=blue, quants=quants, qcol=lightblue, xlim=c(-6, 6), fill_quants=c(beta, 0.999))
+  c(beta, one_minus_beta)
 }
 
 # Plot the error matrix
