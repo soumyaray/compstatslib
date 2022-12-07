@@ -29,9 +29,9 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   # Top-left square
   recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
            rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
-           left_cap = "If evidence \nsays REJECT \nnull \nhypothesis",
-           leftcapArgs = list(cex = 0.5, srt = 90),
-           top_cap = "If null is \nREALLY true",
+           left_cap = "If evidence says \nREJECT \nnull hypothesis",
+           leftcapArgs = list(cex = 0.45, srt = 90),
+           top_cap = "If null is \nreally TRUE",
            topcapArgs = list(cex = 0.5),
            titl = "Type I error", text = alpha,
            titleArgs = list(col = "black", cex = 0.5),
@@ -40,7 +40,7 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   # Top-right square
   recttext(xl = -4, yb =0.25, xr = -2.5, yt = 0.375,
            rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
-           top_cap = "If null is \nREALLY false",
+           top_cap = "If null is \nreally FALSE",
            topcapArgs = list(cex = 0.5),
            titl = "Correct!", text = round((1 - power_quant), 2),
            titleArgs = list(col = "black", cex = 0.5),
@@ -49,8 +49,8 @@ plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05) {
   # Bottom-left square
   recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
            rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
-           left_cap = "If evidence \nsays CANNOT \nREJECT null \nhypothesis",
-           leftcapArgs = list(cex = 0.5, srt = 90),
+           left_cap = "If evidence says \nCANNOT REJECT \nnull hypothesis",
+           leftcapArgs = list(cex = 0.45, srt = 90),
            titl = "Correct!", text = 1 - alpha,
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
