@@ -114,7 +114,7 @@ recttext <- function(xl, yb, xr, yt, pwr_qnt, left_cap = NULL, top_cap = NULL, t
   do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
 }
 
-plot_error_matrix <- function(alpha, alt_stats) {
+plot_error_matrix <- function(alpha, alt_stats, quantiles) {
   # Top-left square
   recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
            rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
@@ -134,7 +134,7 @@ plot_error_matrix <- function(alpha, alt_stats) {
            titl = "Correct!", text = round((alt_stats[2]), 2),
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
-  
+    
   # Bottom-left square
   recttext(xl = -5.5, yb = 0.125, xr = -4, yt = 0.25,
            rectArgs = list(col = rgb(0.30,0.50,0.75, 0.5), lty = "solid"),
@@ -143,7 +143,7 @@ plot_error_matrix <- function(alpha, alt_stats) {
            titl = "Correct!", text = 1 - alpha,
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
-  
+
   # Bottom-right square
   recttext(xl = -4, yb = 0.125, xr = -2.5, yt = 0.25, titl = "Type II error", 
            rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
