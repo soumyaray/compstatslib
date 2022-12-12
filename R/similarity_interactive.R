@@ -20,4 +20,5 @@ interactive_similarity <- function(points=data.frame(), ...) {
     }
     
     return(points)
+
 }
