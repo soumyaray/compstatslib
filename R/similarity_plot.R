@@ -1,3 +1,11 @@
+#' compstatslib plot_sim() function
+#'
+#' @param points 
+#'
+#' @return
+#' @export
+#'
+#' @examples
 plot_sim <- function(points) {
   max_x <- 50
   if (nrow(points) == 0) {
