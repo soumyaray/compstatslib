@@ -78,7 +78,6 @@ plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), t
   }
   
   plotdist(xseq, xdens, col, xlim, type, lty, lwd, segments, qlty, qcol, polyfill)
-  
 }
 
 t_null_plot <- function(df, alpha) {
