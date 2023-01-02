@@ -149,6 +149,15 @@ plot_error_matrix <- function(alpha, alt_stats, quantiles) {
            text = round(alt_stats[1], 2),
            titleArgs = list(col = "black", cex = 0.5),
            textArgs = list(col = "black", cex = 0.75))
+  
+  # Top rectangle
+  recttext(xl = -5.5, yb = 0.25, xr = -2.5, yt = 0.375,
+           rectArgs = list(lwd = 4, border = rgb(0.1, 0.1, 0.75)))
+  
+  # Bottom rectangle
+  recttext(xl = -5.5, yb = 0.125, xr = -2.5, yt = 0.25,
+           rectArgs = list(lwd = 4, border = rgb(0.1, 0.1, 0.75)))
+  
   # END_TESTING
 }
 
