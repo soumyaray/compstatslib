@@ -68,6 +68,10 @@ plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), t
     segments = cbind(xquants, dquants)
   }
   
+  else {
+    xquants = NULL
+  }
+  
   if(!is.null(fill_quants)) {
     polyq = qt(fill_quants, ncp=ncp, df=df)
     polyfill.x = seq(polyq[1], polyq[2], by=0.001)
@@ -78,6 +82,7 @@ plott <- function(lwd=2, ncp=0, df=300, col=rgb(0.30,0.50,0.75), xlim=c(-3,3), t
   }
   
   plotdist(xseq, xdens, col, xlim, type, lty, lwd, segments, qlty, qcol, polyfill)
+  c(polyq[1], xquants)
 }
 
 t_null_plot <- function(df, alpha) {
@@ -90,8 +95,8 @@ t_alt_lines <- function(df, ncp=0, alpha) {
   quants <- c(0.5)
   beta <- pt(qt(1-alpha, df=df), df=df, ncp=ncp)
   one_minus_beta <- 1 - beta
-  plott(df=df, ncp=ncp, type='lines', lty="dashed", col=blue, quants=quants, qcol=lightblue, xlim=c(-6, 6), fill_quants=c(beta, 0.999))
-  c(beta, one_minus_beta)
+  highlight_stats <- plott(df=df, ncp=ncp, type='lines', lty="dashed", col=blue, quants=quants, qcol=lightblue, xlim=c(-6, 6), fill_quants=c(beta, 0.999))
+  c(beta, one_minus_beta, highlight_stats)
 }
 
 # Plot the error matrix
@@ -113,7 +118,7 @@ recttext <- function(xl, yb, xr, yt, pwr_qnt, left_cap = NULL, top_cap = NULL, t
   do.call('text', c(list(x = center[1], y = center[2], labels = text), textArgs))
 }
 
-plot_error_matrix <- function(alpha, alt_stats, quantiles) {
+plot_error_matrix <- function(alpha, alt_stats) {
   # Top-left square
   recttext(xl = -5.5, yb = 0.25, xr = -4, yt = 0.375, 
            rectArgs = list(col = rgb(1, 0.5, 0.5), lty = "solid"),
@@ -151,13 +156,16 @@ plot_error_matrix <- function(alpha, alt_stats, quantiles) {
            textArgs = list(col = "black", cex = 0.75))
   
   # Top rectangle
+  if (alt_stats[3] < alt_stats[4]) {
   recttext(xl = -5.5, yb = 0.25, xr = -2.5, yt = 0.375,
            rectArgs = list(lwd = 4, border = rgb(0.1, 0.1, 0.75)))
+  }
   
   # Bottom rectangle
+  else {
   recttext(xl = -5.5, yb = 0.125, xr = -2.5, yt = 0.25,
            rectArgs = list(lwd = 4, border = rgb(0.1, 0.1, 0.75)))
-  
-  # END_TESTING
+  }
+
 }
 
