@@ -8,6 +8,7 @@
 #' @param sd Population standard deviation (defaults to 4).
 #' @param n Sample size (defaults to 100).
 #' @param alpha Significance level (defaults to 0.05).
+#' @param error_matrix Whether to display type I/II error matrix (defaults to FALSE).
 #' 
 #' @usage
 #' plot_t_test()
@@ -19,7 +20,7 @@
 #' @seealso \code{\link{interactive_t_test}}
 #' 
 #' @export
-plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05, error_matrix) {
+plot_t_test <- function(diff = 0.5, sd = 4, n = 100, alpha = 0.05, error_matrix = FALSE) {
   df <- n - 1
   t <- diff / (sd / sqrt(n))
   t_null_plot(df, alpha)

@@ -14,6 +14,8 @@ plot_t_test()
 \item{n}{Sample size (defaults to 100).}
 
 \item{alpha}{Significance level (defaults to 0.05).}
+
+\item{error_matrix}{Whether to display type I/II error matrix (defaults to FALSE).}
 }
 \description{
 Non-interactive visualization function that plots null and alternative
