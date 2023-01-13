@@ -28,14 +28,14 @@ Three types of functions are made available:
 
 - `interactive_t_test()` Interactive visualization function that will
   show you a simulation of null and alternative distributions of the
-  t-statistic. You will be able to play with the different parameters
-  that affect hypothesis tests in order to see how their variation
-  influences the null t and alternative t distributions, as well as
-  statistical power.
+  t-statistic. You can play with the different parameters that affect
+  hypothesis tests to see how their variation influences the null t and
+  alternative t distributions, as well as statistical power and type
+  I/II errors.
 - `plot_t_test()` Non-interactive function that takes values necessary
   to do a t-test and visualizes the null and alternative t-statistic
   distributions. It shows rejection zone and power as areas under the
-  curves.
+  curves. A type I/II error matrix can also be viewed.
 
 ### Statistical Sampling
 
