@@ -1,4 +1,4 @@
-#' commpstatslib interactive_pca() function
+#' compstatslib interactive_pca() function
 #' 
 #' Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates principal component vectors.
 #' 
