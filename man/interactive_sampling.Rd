@@ -2,7 +2,7 @@
 % Please edit documentation in R/sampling_interactive.R
 \name{interactive_sampling}
 \alias{interactive_sampling}
-\title{commpstatslib interactive_sampling() function}
+\title{compstatslib interactive_sampling() function}
 \usage{
 interactive_sampling()
 

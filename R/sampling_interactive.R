@@ -1,4 +1,4 @@
-#' commpstatslib interactive_sampling() function
+#' compstatslib interactive_sampling() function
 #' 
 #' Interactive visualization to sample from a population and see how a given sampling statistic (theta) is distributed.
 #' 
