@@ -1,4 +1,4 @@
-#' commpstatslib plot_sampling() function
+#' compstatslib plot_sampling() function
 #' 
 #' Plot distribution of a population, samples drawn from the population, given sampling statistic.
 #' 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sampling_plot.R
 \name{plot_sampling}
 \alias{plot_sampling}
-\title{commpstatslib plot_sampling() function}
+\title{compstatslib plot_sampling() function}
 \usage{
 plot_sampling()
 }

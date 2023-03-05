@@ -2,7 +2,7 @@
 % Please edit documentation in R/pca_interactive.R
 \name{interactive_pca}
 \alias{interactive_pca}
-\title{commpstatslib interactive_pca() function}
+\title{compstatslib interactive_pca() function}
 \usage{
 interactive_pca()
 
