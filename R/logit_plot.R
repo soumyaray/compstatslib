@@ -41,8 +41,8 @@ plot_logit <- function(points, formula = y ~ x, regression = TRUE, stats = TRUE,
     return()
   }
 
-  y_name <- formula[[2]] |> as.character()
-  x_name <- formula[[3]] |> as.character()
+  y_name <- as.character(formula[[2]])
+  x_name <- as.character(formula[[3]])
   if (nrow(points) > 0) max_x <- max(max_x, points[[x_name]])
 
   # Plot points

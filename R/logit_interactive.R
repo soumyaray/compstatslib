@@ -42,8 +42,8 @@ interactive_logit <- function(points = data.frame(), formula = y ~ x,
                               min_x = 0, max_x = 50, ...) {
   cat("Click on the plot to create data points; hit [esc] to stop")
 
-  y_name <- formula[[2]] |> as.character()
-  x_name <- formula[[3]] |> as.character()
+  y_name <- as.character(formula[[2]])
+  x_name <- as.character(formula[[3]])
 
   if (nrow(points) > 0) max_x <- max(max_x, points[[x_name]])
 
