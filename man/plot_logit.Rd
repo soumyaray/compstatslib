@@ -12,16 +12,15 @@ plot_regr(points, ...)
 \item{formula}{A \code{formula} to use in estimating logit
 (e.g., \code{y ~ x}).}
 
-\item{regression}{A logical parameter that plots a regression line when
-set to TRUE and hides it when set to FALSE. It is set to TRUE by default.}
+\item{regression}{Logical parameter of whether to plot a regression line 
+(TRUE by default)}
 
-\item{stats}{A logical parameter that displays the relevant statistics on
-the plot area when set to TRUE; it hides them when set to FALSE.
-It is set to TRUE by default.
+\item{stats}{Logical parameter of whether to display relevant statistics on
+the plot area (TRUE by default).
 The following parameters are provided on the plot area:
- \item{Intercept}{The intercept of the logistic regression.}
- \item{Coefficient}{The coefficient of the independent variable.}
- \item{AIC}{An information theoretic fit criterion.}}
+ intercept of the logistic regression;
+ coefficient of the independent variable;
+ AIC (Akaike information criterion).}
 }
 \value{
 A \code{dataframe} containing the points coordinates.
