@@ -4,12 +4,14 @@
 \alias{interactive_regression}
 \title{compstatslib interactive_regression() function}
 \usage{
-interactive_regression(points, ...)
+interactive_regression()
 
 Click on the plotting area to add points and see a corresponding regression line (hitting ESC will stop the simulation).
 }
 \arguments{
 \item{points}{An optional \code{dataframe} of *x* and *y* points to plot and estimate the regression. If no \code{points} are provided, the user is free to click and create points on the plot area.}
+
+\item{noRStudioGD}{Do not use the RStudio graphics device even if specified as the default device (set \code{TRUE} in case of issues with RStudio graphics; will open new OS specific graphics window)}
 
 \item{...}{Further arguments passed to the \code{plot_regr()} function that produces the plot.}
 }
@@ -36,7 +38,7 @@ interactive_regression(pts)
 # Providing coordinates beforehand
 points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
 
-# Replotting the coordinates and continuing the interactive regression
+# Plotting the new coordinates and starting the interactive regression
 interactive_regression(points)
 
 }
