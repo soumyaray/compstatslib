@@ -3,7 +3,7 @@
 #' Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
 #'   
 #' @param points An optional \code{dataframe} of *x* and *y* points to plot and estimate the regression. If no \code{points} are provided, the user is free to click and create points on the plot area.
-#' 
+#' @param noRStudioGD Do not use the RStudio graphics device even if specified as the default device (set \code{TRUE} in case of issues with RStudio graphics; will open new OS specific graphics window)
 #' @param ... Further arguments passed to the \code{plot_regr()} function that produces the plot.
 #' 
 #' @return A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
@@ -16,7 +16,7 @@
 #'  \item{R-squared}{The multiple coefficient of determination.}
 #' 
 #' @usage 
-#' interactive_regression(points, ...)
+#' interactive_regression()
 #' 
 #' Click on the plotting area to add points and see a corresponding regression line (hitting ESC will stop the simulation).
 #'
@@ -32,12 +32,19 @@
 #' # Providing coordinates beforehand
 #' points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
 #' 
-#' # Replotting the coordinates and continuing the interactive regression
+#' # Plotting the new coordinates and starting the interactive regression
 #' interactive_regression(points)
 #'
 #' @export
-interactive_regression <- function(points=data.frame(), ...) {
-  cat("Click on the plot to create data points; hit [esc] to stop")
+interactive_regression <- function(points=data.frame(), noRStudioGD=FALSE, ...) {
+  cat("Click on the plot to create data points; hit [esc] to stop\n")
+  cat("note: if points are not accurately showing, please add noRStudioGD=TRUE\n")
+  
+  if (noRStudioGD) {
+    graphics.off()
+    dev.new(noRStudioGD = noRStudioGD)
+  }
+  
   repeat {
     plot_regr(points, ...)
     
@@ -49,6 +56,11 @@ interactive_regression <- function(points=data.frame(), ...) {
     } else {
       points <- rbind(points, c(click_loc$x, click_loc$y))
     }
+  }
+  
+  if (noRStudioGD) {
+    graphics.off()
+    compstatslib::plot_regr(points)
   }
   
   return(points)
