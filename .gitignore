@@ -2,3 +2,7 @@
 .Rhistory
 .RData
 .Rproj.user
+
+# Sideways files (see tool: https://github.com/soumyaray/sideways)
+.swcopy
+.swsymlink
