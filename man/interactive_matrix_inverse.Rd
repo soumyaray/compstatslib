@@ -4,10 +4,7 @@
 \alias{interactive_matrix_inverse}
 \title{compstatslib interactive_matrix_inverse() function}
 \usage{
-interactive_matrix_inverse(x1_init=1, y1_init=2, x2_init=2, y2_init=1)
-
-After running the function, the user can click on the gear icon in the top-left corner of the plot area.
-A window with four slider bars will pop up, allowing the user to change the value of the 4 parameters.
+interactive_matrix_inverse(x1_init = 1, y1_init = 2, x2_init = 2, y2_init = 1)
 }
 \arguments{
 \item{x1_init}{The first row (or column) vector of matrix A. This parameter is set to 1 by default.}
@@ -23,10 +20,15 @@ The area of the parallelogram resulting from these two vectors is the determinan
 The area of the parallelogram resulting from these two vectors is the determinant of the inverse matrix A^(-1).}
 }
 \description{
-Interactive function that allows one to *manipulate* a matrix inversion.
+Interactive function that allows one to visualize a matrix inversion
+using sliders to adjust matrix parameters.
 }
 \details{
 Inspired by: \link{https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830?newreg=d55776428dd2418e8a6a971dfdbfa17}
+
+
+Use the sliders in the viewer to adjust the matrix parameters and see the
+resulting transformation. Click "Done" to close.
 }
 \seealso{
 \code{\link{plot_matrix_inverse}}

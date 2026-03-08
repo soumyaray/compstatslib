@@ -18,17 +18,24 @@ Each interactive function is an independent slice. For each function:
 2. **Port implementation** — Replace `manipulate`/`locator` with Shiny gadget
 3. **Manual verification** — Test interactively in Positron (and RStudio if available)
 
+## Workflow Notes
+
+- **Do NOT run `devtools::check()` until all slices are ported and manually verified.** It is slow and catches pre-existing issues unrelated to this branch. Run `devtools::document()` and `devtools::test()` after code changes. Save `devtools::check()` for the final cleanup slice.
+- **Manual verification in Positron should happen after each slice's code is written**, before marking the slice complete.
+
 ## Current State
 
 - [x] Plan created
 - [x] `interactive_sampling` ported and manually tested in Positron
-- [ ] `interactive_t_test` — uses `manipulate`, needs porting
-- [ ] `interactive_matrix_inverse` — uses `manipulate` (and `library(manipulate)`!), needs porting
-- [ ] `interactive_regression` — uses `locator()`, needs porting
-- [ ] `interactive_logit` — uses `locator()`, needs porting
-- [ ] `interactive_pca` — uses `locator()`, needs porting
-- [ ] Remove `manipulate` from DESCRIPTION Imports (already done, but verify no references remain)
-- [ ] `devtools::check()` passes
+- [x] `interactive_t_test` — ported (code + docs + test passing), layout refined to sidebar, **manually verified in Positron**
+- [x] `interactive_matrix_inverse` — ported (code + docs + test passing), sidebar layout, **manually verified in Positron**
+- [x] `interactive_regression` — ported (code + docs + test passing), **manually verified in Positron**
+- [x] `interactive_logit` — ported (code + docs + test passing), **manually verified in Positron**
+- [x] `interactive_pca` — ported with new `plot_pca()` extracted (code + docs + tests passing), fixed asp/click bug, **manually verified in Positron**
+- [x] Remove `manipulate` from DESCRIPTION Imports (already done, verified no references remain)
+- [x] No `manipulate` or `locator()` references remain in R/ source files
+- [x] Manual verification of all functions in Positron
+- [ ] `devtools::check()` — deferred until CRAN preparation
 
 ## Key Findings
 
@@ -43,14 +50,20 @@ These patterns and decisions apply to all remaining ports:
 - Place controls (sliders, dropdowns, buttons) in a `tags$div` at the top of `miniContentPanel`, plot below
 - Use `shiny::runGadget(ui, server, viewer = shiny::paneViewer())` to open in IDE viewer pane
 
-**Layout — flex column for dynamic sizing:**
+**Layout — two patterns depending on control count:**
 
-- Set `miniContentPanel(padding = 0, ...)` then use a flex column container: `display: flex; flex-direction: column; height: 100%;`
-- Controls row: `flex-shrink: 0` so it keeps its natural height
-- Plot container: `flex: 1; min-height: 0;` so it fills remaining space
-- Do NOT hardcode pixel heights (e.g., `calc(100% - 80px)`) — title bar height varies
+1. **Few controls (dropdowns/buttons):** flex column with controls row on top, plot below
+   - Set `miniContentPanel(padding = 0, ...)` then use a flex column container: `display: flex; flex-direction: column; height: 100%;`
+   - Controls row: `flex-shrink: 0` so it keeps its natural height
+   - Plot container: `flex: 1; min-height: 0;` so it fills remaining space
+   - Do NOT hardcode pixel heights (e.g., `calc(100% - 80px)`) — title bar height varies
 
-**Alignment — controls row:**
+2. **Many sliders:** sidebar layout — controls on the left, plot fills remaining space
+   - Sliders are vertically tall (label + value + track + ticks) and eat too much vertical space when placed above the plot
+   - Use `display: flex; height: 100%;` with a fixed-width sidebar (`width: 140px; flex-shrink: 0; overflow-y: auto;`) and `flex: 1; min-width: 0;` for the plot
+   - This maximizes vertical space for the plot
+
+**Alignment — controls row (for pattern 1):**
 
 - Use `display: flex; align-items: flex-end; gap: 12px; padding: 8px;` on the controls div
 - Action buttons need `margin-bottom: 15px;` wrapper to align with select inputs (which have built-in bottom margin from their labels)
@@ -83,16 +96,22 @@ These patterns and decisions apply to all remaining ports:
 - Replaced `Imports: manipulate` with `Imports: shiny, miniUI`
 - Already done in this branch
 
+**Roxygen `@usage` pitfall:**
+
+- Do NOT put descriptive prose in `@usage` — it must contain valid R function signatures only
+- Use `@details` for usage instructions (e.g., "Click Done to close")
+- R CMD check will warn about "Bad \usage lines" otherwise
+
 ### Function inventory
 
-| Function                      | Current mechanism                  | Controls                                                 | Plot function              | Notes                                                                          |
-| ----------------------------- | ---------------------------------- | -------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------ |
-| `interactive_sampling`        | ~~`manipulate`~~ **DONE**          | picker (sample_size), picker (reps), button (Sample)     | `plot_sampling()`          | Accumulates `sample_theta` across clicks                                       |
-| `interactive_t_test`          | `manipulate`                       | 4 sliders (diff, sd, n, alpha), 1 checkbox (error_matrix) | `plot_t_test()`          | Stateless — no accumulation, re-plots from scratch each time                   |
-| `interactive_matrix_inverse`  | `manipulate` + `library(manipulate)` | 4 sliders (x1, y1, x2, y2)                            | `plot_matrix_inverse()`    | Uses `library(manipulate)` instead of `::` — must fix. Stateless               |
-| `interactive_regression`      | `locator()`                        | Point-and-click                                          | `plot_regr()`              | Accumulates points. Uses `locator(1)` in repeat loop                           |
-| `interactive_logit`           | `locator()`                        | Point-and-click                                          | `plot_logit()`             | Accumulates points. Clamps x, binarizes y                                      |
-| `interactive_pca`             | `locator()`                        | Point-and-click                                          | Inline (no `plot_pca()`)   | Accumulates points. Computes PCA inline. Uninitialized `pca` var if < 3 points |
+| Function                      | Status        | Controls                                                 | Plot function              | Notes                                                                          |
+| ----------------------------- | ------------- | -------------------------------------------------------- | -------------------------- | ------------------------------------------------------------------------------ |
+| `interactive_sampling`        | **DONE**      | picker (sample_size), picker (reps), button (Sample)     | `plot_sampling()`          | Accumulates `sample_theta` across clicks                                       |
+| `interactive_t_test`          | **VERIFYING** | 4 sliders (diff, sd, n, alpha), 1 checkbox (error_matrix) | `plot_t_test()`          | Stateless — sidebar layout; `suppressWarnings` for `qt()` precision warnings   |
+| `interactive_matrix_inverse`  | **PORTED**    | 4 sliders (x1, y1, x2, y2)                              | `plot_matrix_inverse()`    | Stateless — live-updating sliders                                              |
+| `interactive_regression`      | **PORTED**    | Point-and-click via `plotOutput(click=...)`               | `plot_regr()`              | Accumulates points. Returns dataframe on Done                                  |
+| `interactive_logit`           | **PORTED**    | Point-and-click via `plotOutput(click=...)`               | `plot_logit()`             | Accumulates points. Clamps x, binarizes y                                      |
+| `interactive_pca`             | **PORTED**    | Point-and-click via `plotOutput(click=...)`               | `plot_pca()` **(NEW)**     | Accumulates points. Returns list(points, pca). Fixed uninitialized `pca` bug   |
 
 ### locator()-based functions: porting strategy
 
@@ -137,61 +156,74 @@ Key differences:
 
 > Stateless function — simplest manipulate port. Live-updating sliders (no button needed).
 
-- [ ] 1.1a Test: `interactive_t_test` returns a Shiny app object or runs without error
-- [ ] 1.2 Port `R/t_statistic_interactive.R`: replace `manipulate` with Shiny gadget using `sliderInput` and `checkboxInput`; sliders should live-update the plot (no trigger/button pattern needed)
-- [ ] 1.3 Update roxygen2 docs: remove gear-icon reference
-- [ ] 1.4 Manual verification in Positron
+- [x] 1.1a Test: `interactive_t_test` returns a Shiny app object or runs without error — **no separate interactive test needed; relies on existing `plot_t_test` test**
+- [x] 1.2 Port `R/t_statistic_interactive.R`: replaced `manipulate` with Shiny gadget using `sliderInput` and `checkboxInput`; sliders live-update the plot
+- [x] 1.2b Layout refined: sidebar layout (controls left, plot right) to maximize plot vertical space; `suppressWarnings` wrapping `plot_t_test` for `qt()` precision warnings
+- [x] 1.3 Update roxygen2 docs: removed gear-icon reference, moved usage prose to `@details`
+- [x] 1.4 Manual verification in Positron — **done**
 
 ### Slice 2: `interactive_matrix_inverse` (manipulate with sliders)
 
-> Also stateless. Has a `library(manipulate)` call that must be removed.
+> Also stateless. Had a `library(manipulate)` call that was removed.
 
-- [ ] 2.1a Test: `interactive_matrix_inverse` returns a Shiny app object or runs without error
-- [ ] 2.2 Port `R/matrix_inverse_interactive.R`: remove `library(manipulate)`, replace with Shiny gadget using 4 `sliderInput`s; live-updating
-- [ ] 2.3 Update roxygen2 docs: remove gear-icon/slider-bar references
-- [ ] 2.4 Manual verification in Positron
+- [x] 2.1a Test: relies on existing `plot_matrix_inverse` test
+- [x] 2.2 Port `R/matrix_inverse_interactive.R`: removed `library(manipulate)`, replaced with Shiny gadget using 4 `sliderInput`s; live-updating
+- [x] 2.3 Update roxygen2 docs: removed gear-icon/slider-bar references, moved usage prose to `@details`
+- [x] 2.4 Manual verification in Positron — **done** (switched to sidebar layout)
 
 ### Slice 3: `interactive_regression` (locator-based)
 
 > First `locator()` port. Accumulates clicked points. Uses separate `plot_regr()`.
 
-- [ ] 3.1a Test: `interactive_regression` constructs without error; verify point accumulation logic
-- [ ] 3.2 Port `R/regression_interactive.R`: replace `locator()` loop with `plotOutput(click=...)` + `observeEvent(input$plot_click, ...)` reactive pattern
-- [ ] 3.3 Update roxygen2 docs: replace "hit ESC" with Done/Cancel instructions
-- [ ] 3.4 Manual verification in Positron
+- [x] 3.1a Test: relies on existing `plot_regr` test
+- [x] 3.2 Port `R/regression_interactive.R`: replaced `locator()` loop with `plotOutput(click=...)` + `observeEvent(input$plot_click, ...)` reactive pattern
+- [x] 3.3 Update roxygen2 docs: replaced "hit ESC" with Done/Cancel instructions via `@details`
+- [x] 3.4 Manual verification in Positron — **done**
 
 ### Slice 4: `interactive_logit` (locator-based)
 
 > Similar to regression but with x-clamping and y-binarization on click.
 
-- [ ] 4.1a Test: `interactive_logit` constructs without error
-- [ ] 4.2 Port `R/logit_interactive.R`: replace `locator()` with click-based Shiny gadget; preserve clamping/binarization logic in click handler
-- [ ] 4.3 Update roxygen2 docs
-- [ ] 4.4 Manual verification in Positron
+- [x] 4.1a Test: relies on existing `plot_logit` test
+- [x] 4.2 Port `R/logit_interactive.R`: replaced `locator()` with click-based Shiny gadget; preserved clamping/binarization logic in click handler
+- [x] 4.3 Update roxygen2 docs: moved usage prose to `@details`
+- [x] 4.4 Manual verification in Positron — **done**
 
 ### Slice 5: `interactive_pca` (locator-based, inline plotting)
 
-> Most complex — no separate `plot_pca()`, PCA computation is inline. Extract `plot_pca()` first, then port interactive wrapper.
+> Most complex — extracted `plot_pca()` first, then ported interactive wrapper.
 
-- [ ] 5.1a Test: `plot_pca` produces correct output for various point counts (0, 1, 2, 3+ points)
-- [ ] 5.1b Test: `interactive_pca` constructs without error
-- [ ] 5.2 Extract `plot_pca()` into `R/pca_plot.R`: move inline plotting + PCA computation into standalone function; fix uninitialized `pca` variable when < 3 points
-- [ ] 5.3 Port `R/pca_interactive.R`: replace `locator()` with click-based Shiny gadget calling `plot_pca()`
-- [ ] 5.4 Update roxygen2 docs
-- [ ] 5.5 Manual verification in Positron
+- [x] 5.1a Test: added 3 tests for `plot_pca()` — empty points, 2 points, 3+ points (returns prcomp)
+- [x] 5.1b Test: `interactive_pca` — relies on `plot_pca` tests
+- [x] 5.2 Extract `plot_pca()` into `R/pca_plot.R`: moved inline plotting + PCA computation into standalone function; fixed uninitialized `pca` variable (returns `NULL` when < 3 points)
+- [x] 5.3 Port `R/pca_interactive.R`: replaced `locator()` with click-based Shiny gadget calling `plot_pca()`
+- [x] 5.4 Update roxygen2 docs
+- [x] 5.5 Manual verification in Positron — **done** (fixed `par(pty="s")` breaking click mapping; kept `asp=1` in plot calls)
 
 ### Slice 6: Cleanup and verification
 
-- [ ] 6.1 Grep for any remaining `manipulate` references in R/ files
-- [ ] 6.2 Grep for any remaining `locator()` references in R/ files
-- [ ] 6.3 Run `devtools::document()` to regenerate NAMESPACE and man pages
-- [ ] 6.4 Run `devtools::check()` — must pass with no errors
-- [ ] 6.5 Verify DESCRIPTION has no `manipulate` dependency
+- [x] 6.1 Grep for any remaining `manipulate` references in R/ files — **none found**
+- [x] 6.2 Grep for any remaining `locator()` references in R/ files — **none found**
+- [x] 6.3 Run `devtools::document()` to regenerate NAMESPACE and man pages — **done**
+- [ ] 6.4 Run `devtools::check()` — deferred until after manual verification
+- [x] 6.5 Verify DESCRIPTION has no `manipulate` dependency — **confirmed**
 
 ## Completed
 
 - [x] `interactive_sampling` ported to Shiny gadget (prototype slice — established all patterns documented in Key Findings)
 - [x] DESCRIPTION updated: `manipulate` replaced with `shiny`, `miniUI`
+- [x] All 5 remaining functions ported (t_test, matrix_inverse, regression, logit, pca)
+- [x] `plot_pca()` extracted as new standalone function with tests
+- [x] All `manipulate` and `locator()` references removed from R/ source files
+- [x] `devtools::document()` regenerated NAMESPACE and man pages
+- [x] `devtools::test()` passes (11/11 tests)
+- [x] Fixed roxygen `@usage` → `@details` for prose descriptions
+
+## Remaining
+
+- [x] Manual verification of all 5 ported functions in Positron — **all done**
+- [x] Sidebar layout applied to `interactive_matrix_inverse`
+- [ ] `devtools::check()` — deferred until CRAN preparation
 
 ---
 

@@ -39,5 +39,21 @@ test_that("Plotting matrix inverse should not produce errors", {
     plot_matrix_inverse(1, 2, 2, 1), NA)
 })
 
+# PCA plotting
+test_that("Plotting PCA with no points should not produce errors", {
+  expect_error(plot_pca(), NA)
+})
+
+test_that("Plotting PCA with 2 points should not produce errors", {
+  points <- data.frame(x = c(1, 2), y = c(3, 4))
+  expect_error(plot_pca(points), NA)
+})
+
+test_that("Plotting PCA with 3+ points should return prcomp result", {
+  points <- data.frame(x = c(1, 2, 3, 4), y = c(2, 4, 5, 8))
+  result <- plot_pca(points)
+  expect_s3_class(result, "prcomp")
+})
+
 
 unlink("Rplots.pdf")

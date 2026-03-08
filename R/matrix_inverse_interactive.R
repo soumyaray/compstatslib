@@ -1,36 +1,79 @@
 #' compstatslib interactive_matrix_inverse() function
-#' 
-#' Interactive function that allows one to *manipulate* a matrix inversion.
-#' 
+#'
+#' Interactive function that allows one to visualize a matrix inversion
+#' using sliders to adjust matrix parameters.
+#'
 #' Inspired by: \link{https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830?newreg=d55776428dd2418e8a6a971dfdbfa17}
-#' 
+#'
 #' @param x1_init The first row (or column) vector of matrix A. This parameter is set to 1 by default.
-#' 
+#'
 #' @param y1_init The second row (or column) vector of matrix A. This parameter is set to 2 by default.
-#' 
+#'
 #' The area of the parallelogram resulting from these two vectors is the determinant of matrix A.
-#' 
+#'
 #' @param x2_init The first row (or column) vector of the inverse matrix A^(-1). This parameter is set to 2 by default.
-#' 
+#'
 #' @param y2_init The second row (or column) vector of the inverse matrix A^(-1). This parameter is set to 1 by default.
-#' 
+#'
 #' The area of the parallelogram resulting from these two vectors is the determinant of the inverse matrix A^(-1).
-#' 
-#' @usage 
-#' interactive_matrix_inverse(x1_init=1, y1_init=2, x2_init=2, y2_init=1)
-#' 
-#' After running the function, the user can click on the gear icon in the top-left corner of the plot area.
-#' A window with four slider bars will pop up, allowing the user to change the value of the 4 parameters.
-#' 
+#'
+#' @details
+#' Use the sliders in the viewer to adjust the matrix parameters and see the
+#' resulting transformation. Click "Done" to close.
+#'
 #' @seealso \code{\link{plot_matrix_inverse}}
 #'
 #' @export
-interactive_matrix_inverse <- function(x1_init=1, y1_init=2, x2_init=2, y2_init=1) {
-  library(manipulate)
-  
-  manipulate(plot_matrix_inverse(x1, y1, x2, y2),
-             x1 = slider(min=-2, max=2, initial=x1_init, step=0.1),
-             y1 = slider(min=-2, max=2, initial=y1_init, step=0.1),
-             x2 = slider(min=-2, max=2, initial=x2_init, step=0.1),
-             y2 = slider(min=-2, max=2, initial=y2_init, step=0.1))
+interactive_matrix_inverse <- function(x1_init = 1, y1_init = 2,
+                                       x2_init = 2, y2_init = 1) {
+  ui <- miniUI::miniPage(
+    miniUI::gadgetTitleBar("Matrix Inverse",
+      right = miniUI::miniTitleBarButton("done", "Done", primary = TRUE)
+    ),
+    miniUI::miniContentPanel(
+      padding = 0,
+      shiny::tags$div(
+        style = "display: flex; height: 100%;",
+        shiny::tags$div(
+          style = "width: 140px; flex-shrink: 0; padding: 4px 6px; overflow-y: auto;",
+          shiny::sliderInput("x1", "x1",
+            min = -2, max = 2, value = x1_init, step = 0.1,
+            width = "100%"),
+          shiny::sliderInput("y1", "y1",
+            min = -2, max = 2, value = y1_init, step = 0.1,
+            width = "100%"),
+          shiny::sliderInput("x2", "x2",
+            min = -2, max = 2, value = x2_init, step = 0.1,
+            width = "100%"),
+          shiny::sliderInput("y2", "y2",
+            min = -2, max = 2, value = y2_init, step = 0.1,
+            width = "100%")
+        ),
+        shiny::tags$div(
+          style = "flex: 1; min-width: 0;",
+          shiny::plotOutput("matrix_plot", height = "100%")
+        )
+      )
+    )
+  )
+
+  server <- function(input, output, session) {
+    output$matrix_plot <- shiny::renderPlot({
+      plot_matrix_inverse(input$x1, input$y1, input$x2, input$y2)
+    })
+
+    shiny::observeEvent(input$done, {
+      shiny::stopApp(NULL)
+    })
+
+    shiny::observeEvent(input$cancel, {
+      shiny::stopApp(NULL)
+    })
+  }
+
+  old_opts <- options(shiny.quiet = TRUE)
+  on.exit(options(old_opts))
+  suppressMessages(
+    shiny::runGadget(ui, server, viewer = shiny::paneViewer())
+  )
 }

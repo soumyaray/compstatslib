@@ -4,10 +4,13 @@
 \alias{interactive_logit}
 \title{compstatslib interactive_logit() function}
 \usage{
-interactive_regression(points, ...)
-
-*Click on the plotting area to add points and see a corresponding regression
-curve (hitting ESC will stop the simulation).*
+interactive_logit(
+  points = data.frame(),
+  formula = y ~ x,
+  min_x = 0,
+  max_x = 50,
+  ...
+)
 }
 \arguments{
 \item{points}{An optional \code{dataframe} of x and y points to plot
@@ -17,6 +20,10 @@ on the plot area.}
 
 \item{formula}{A \code{formula} to use in estimating logit
 (e.g., \code{y ~ x}).}
+
+\item{min_x}{Minimum x value for the plot range.}
+
+\item{max_x}{Maximum x value for the plot range.}
 
 \item{...}{Further arguments passed to the \code{plot_logit()} function that
 produces the plot.}
@@ -29,6 +36,10 @@ Interactive visualization function that lets you point-and-click to add
 data points, while it automatically plots and updates a logistic regression
 curve and associated statistics.
 }
+\details{
+Click on the plotting area to add points and see a corresponding logistic
+regression curve. Click "Done" to return the points to the console.
+}
 \examples{
 # Selecting coordinates on the plot area, storing them in 'pts'
 pts <- interactive_logit()
@@ -37,11 +48,7 @@ pts <- interactive_logit()
 # continue the interactive regression
 interactive_logit(pts)
 
-# Providing coordinates beforehand
-mydata <- data.frame(in = c(1, 4, 7, 10), out = c(0, 0, 1, 1))
-interactive_regression(mydata, formula = out ~ in)
-
 }
 \seealso{
-\code{\link{plot_regr}}
+\code{\link{plot_logit}}
 }
