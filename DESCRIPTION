@@ -1,19 +1,20 @@
 Package: compstatslib
 Type: Package
 Title: Interactive tools and plotting functions to teach or learn basic concepts in computational statistics
-Version: 0.4.1
-Date: 2023-03-07
+Version: 0.5.0
+Date: 2026-03-08
 Authors@R: c(person("Soumya", "Ray", email = "soumya.ray@gmail.com", role = c("aut", "cre", "ths")),
              person("Daniele", "Melotti", email = "danielemelotti@hotmail.com", role = c("aut")))
 Description: Collection of interactive, plotting, and computational functions 
   that help teachers and students learn concepts in computational statistics. 
   Useful for in-class demonstrations, self-learning, and report generation.
 Imports:
-  manipulate
+  shiny,
+  miniUI
 Depends: R (>= 4.0.0)
 License: MIT
 Encoding: UTF-8
-RoxygenNote: 7.2.1
+RoxygenNote: 7.3.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

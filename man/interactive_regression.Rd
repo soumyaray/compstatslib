@@ -4,18 +4,21 @@
 \alias{interactive_regression}
 \title{compstatslib interactive_regression() function}
 \usage{
-interactive_regression(points, ...)
-
-Click on the plotting area to add points and see a corresponding regression line (hitting ESC will stop the simulation).
+interactive_regression(points = data.frame(), ...)
 }
 \arguments{
-\item{points}{An optional \code{dataframe} of *x* and *y* points to plot and estimate the regression. If no \code{points} are provided, the user is free to click and create points on the plot area.}
+\item{points}{An optional \code{dataframe} of *x* and *y* points to plot and
+estimate the regression. If no \code{points} are provided, the user is free
+to click and create points on the plot area.}
 
-\item{...}{Further arguments passed to the \code{plot_regr()} function that produces the plot.}
+\item{...}{Further arguments passed to the \code{plot_regr()} function that
+produces the plot.}
 }
 \value{
-A \code{dataframe} containing the points coordinates. Additionally, the following parameters are provided on the plot area:
- \item{Raw intercept}{The y-coordinate at which the regression line crosses the y-axis.}
+A \code{dataframe} containing the points coordinates. Additionally,
+the following parameters are provided on the plot area:
+ \item{Raw intercept}{The y-coordinate at which the regression line crosses
+ the y-axis.}
  \item{Raw slope}{The value of the slope parameter.}
  \item{Correlation}{The strength of the linear relationship.}
  \item{SSR}{The sum of squares regression.}
@@ -24,13 +27,20 @@ A \code{dataframe} containing the points coordinates. Additionally, the followin
  \item{R-squared}{The multiple coefficient of determination.}
 }
 \description{
-Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates a regression line and associated statistics.
+Interactive visualization function that lets you point-and-click to add data
+points, while it automatically plots and updates a regression line and
+associated statistics.
+}
+\details{
+Click on the plot area to add points and see a corresponding regression line.
+Click "Done" to return the points to the console.
 }
 \examples{
 # Selecting coordinates on the plot area, storing them in 'pts'
 pts <- interactive_regression()
 
-# Replotting the points stored earlier in 'pts', allowing the user to continue the interactive regression
+# Replotting the points stored earlier in 'pts', allowing the user to
+# continue the interactive regression
 interactive_regression(pts)
 
 # Providing coordinates beforehand

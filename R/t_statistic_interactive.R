@@ -1,28 +1,77 @@
 #' compstatslib interactive_t_test() function
-#' 
-#' Interactive visualization function that allows one to *manipulate* the parameters that affect hypothesis testing in order to see how their variation influences the null t and alternative t distributions, and statistical power.
-#' 
+#'
+#' Interactive visualization that allows one to adjust the parameters affecting
+#' hypothesis testing in order to see how their variation influences the null t
+#' and alternative t distributions, and statistical power.
+#'
 #' @param diff The test difference.
 #' @param sd Population standard deviation.
 #' @param n Sample size.
 #' @param alpha Significance level.
-#' 
-#' @usage 
-#' interactive_t_test()
-#' 
-#' One can click on the gear icon on the top-left corner of the plotting area to open the parameter settings.
-#' The movement of the alternative t-statistics distribution with respect to the null distribution will be visible, as well as the consequent change in statistical power.
-#' 
+#'
+#' @details
+#' Use the sliders in the viewer to adjust parameters. The movement of the
+#' alternative t-statistics distribution with respect to the null distribution
+#' will be visible, as well as the consequent change in statistical power.
+#' Click "Done" to close.
+#'
 #' @seealso \code{\link{plot_t_test}}
-#' 
+#'
 #' @export
 interactive_t_test <- function() {
-  manipulate::manipulate(
-    plot_t_test(diff, sd, n, alpha, error_matrix),
-    diff  = manipulate::slider(0, 4, step = 0.1, initial = 0.5),
-    sd    = manipulate::slider(1, 5, step = 0.1, initial = 4),
-    n     = manipulate::slider(2, 500, step = 1, initial = 100),
-    alpha = manipulate::slider(0.01, 0.1, step = 0.01, initial = 0.05),
-    error_matrix = manipulate::checkbox(initial = FALSE, label = "Error Matrix")
+  ui <- miniUI::miniPage(
+    miniUI::gadgetTitleBar("T-Test Visualization",
+      right = miniUI::miniTitleBarButton("done", "Done", primary = TRUE)
+    ),
+    miniUI::miniContentPanel(
+      padding = 0,
+      shiny::tags$div(
+        style = "display: flex; height: 100%;",
+        shiny::tags$div(
+          style = "width: 140px; flex-shrink: 0; padding: 4px 6px; overflow-y: auto;",
+          shiny::sliderInput("diff", "Difference",
+            min = 0, max = 4, value = 0.5, step = 0.1,
+            width = "100%"),
+          shiny::sliderInput("sd", "Std Dev",
+            min = 1, max = 5, value = 4, step = 0.1,
+            width = "100%"),
+          shiny::sliderInput("n", "Sample Size",
+            min = 2, max = 500, value = 100, step = 1,
+            width = "100%"),
+          shiny::sliderInput("alpha", "Alpha",
+            min = 0.01, max = 0.1, value = 0.05, step = 0.01,
+            width = "100%"),
+          shiny::checkboxInput("error_matrix", "Error Matrix",
+            value = FALSE)
+        ),
+        shiny::tags$div(
+          style = "flex: 1; min-width: 0;",
+          shiny::plotOutput("t_test_plot", height = "100%")
+        )
+      )
+    )
+  )
+
+  server <- function(input, output, session) {
+    output$t_test_plot <- shiny::renderPlot({
+      suppressWarnings(
+        plot_t_test(input$diff, input$sd, input$n,
+                    input$alpha, input$error_matrix)
+      )
+    })
+
+    shiny::observeEvent(input$done, {
+      shiny::stopApp(NULL)
+    })
+
+    shiny::observeEvent(input$cancel, {
+      shiny::stopApp(NULL)
+    })
+  }
+
+  old_opts <- options(shiny.quiet = TRUE)
+  on.exit(options(old_opts))
+  suppressMessages(
+    shiny::runGadget(ui, server, viewer = shiny::paneViewer())
   )
 }

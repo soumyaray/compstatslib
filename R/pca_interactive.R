@@ -1,74 +1,75 @@
 #' compstatslib interactive_pca() function
-#' 
-#' Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates principal component vectors.
-#' 
-#' @param meancenter A logical parameter that will mean center the points if set to TRUE, while it will not mean center the points if set to FALSE. By default it is set to TRUE.
-#' 
-#' @return A dataframe containing the *x* and *y* coordinates of the points selected by the user, and a list of parameters related to the estimated principal components, including:
-#'  \item{sdev}{A vector of the standard deviations of the estimated principal components.}
-#'  \item{rotation}{A dataframe of the principal components coordinates.}
-#'  \item{center}{A vector of length equal the number of columns of x can be supplied. The value is passed to *scale*.}
-#'  \item{scale}{A logical value indicating whether the variables should be scaled to have unit variance before the analysis takes place. The default is FALSE.}
-#'  \item{x}{A numeric or complex matrix (or data frame) which provides the data for the principal components analysis.}
-#'  
-#' @usage 
-#' interactive_pca()
-#' 
-#' Click on the plotting area to add points and see corresponding principal components (hitting ESC will stop the simulation).
+#'
+#' Interactive visualization function that lets you point-and-click to add data
+#' points, while it automatically plots and updates principal component vectors.
+#'
+#' @param meancenter A logical parameter that will mean center the points if
+#' set to TRUE, while it will not mean center the points if set to FALSE. By
+#' default it is set to TRUE.
+#'
+#' @return A list containing:
+#'  \item{points}{A dataframe with \code{x} and \code{y} coordinates.}
+#'  \item{pca}{The \code{prcomp} result if 3+ points were added, or
+#'  \code{NULL} otherwise.}
+#'
+#' @details
+#' Click on the plotting area to add points and see corresponding principal
+#' components. Click "Done" to return results to the console.
+#'
+#' @seealso \code{\link{plot_pca}}
 #'
 #' @export
 interactive_pca <- function(meancenter = TRUE) {
-  cat("Click on the plot to create data points; hit [esc] to stop")
-  
-  old_par <- par(no.readonly = TRUE)
-  par(pty='s')
-  plot(NA, xlim=c(-50,50), ylim=c(-50,50), asp=1)
-  points = data.frame()
-  
-  repeat {
-    click_loc <- locator(1)
-    if (is.null(click_loc)) break
-    # z <- rnorm(1)
-    
-    if(nrow(points) == 0 ) {
-      # points <- data.frame(x=click_loc$x, y=click_loc$y, z=z)
-      points <- data.frame(x=click_loc$x, y=click_loc$y)
-    } else {
-      # points <- rbind(points, c(click_loc$x, click_loc$y, z))
-      points <- rbind(points, c(click_loc$x, click_loc$y))
-    }
-    
-    # mean-center points
-    if (meancenter && nrow(points) > 1) {
-      mc_diff <- sapply(points, mean)
-      mc_points <- sweep(points, 2, mc_diff)
-    } else {
-      mc_diff <- c(x=0, y=0)
-      mc_points <- points
-    }
-    
-    # Plot points
-    plot(points[c("x", "y")], xlim=c(-50,50), ylim=c(-50,50), pch=19, cex=2, col="gray")
-    
-    # Plot PC vectors
-    if (nrow(points) >= 3) {
-      pca <- prcomp(mc_points, scale. = FALSE)
-      egvec <- pca$rotation[, c('PC1', 'PC2')]  # eigenvectors
-      sv <- pca$sdev[1:2]                       # singular values
-      vec <- egvec %*% diag(sv)                 # scale vectors up proportionally
-      rownames(vec) <- c('x', 'y')
-      colnames(vec) <- c('PC1', 'PC2')
-      
-      arrows( -vec['x',]+mc_diff['x'], -vec['y',]+mc_diff['y'], 
-               vec['x',]+mc_diff['x'],  vec['y',]+mc_diff['y'], 
-               lty=c("solid", "dotted"), length = 0.1)
-    }
+  ui <- miniUI::miniPage(
+    miniUI::gadgetTitleBar("Interactive PCA",
+      right = miniUI::miniTitleBarButton("done", "Done", primary = TRUE)
+    ),
+    miniUI::miniContentPanel(
+      padding = 0,
+      shiny::tags$div(
+        style = paste("display: flex; flex-direction: column;",
+                      "height: 100%;"),
+        shiny::tags$div(
+          style = "flex: 1; min-height: 0;",
+          shiny::plotOutput("pca_plot", height = "100%",
+                           click = "plot_click")
+        )
+      )
+    )
+  )
+
+  server <- function(input, output, session) {
+    pts <- shiny::reactiveVal(data.frame())
+    pca_result <- shiny::reactiveVal(NULL)
+
+    shiny::observeEvent(input$plot_click, {
+      click <- input$plot_click
+      new_pt <- data.frame(x = click$x, y = click$y)
+      current <- pts()
+      if (nrow(current) == 0) {
+        pts(new_pt)
+      } else {
+        pts(rbind(current, new_pt))
+      }
+    })
+
+    output$pca_plot <- shiny::renderPlot({
+      result <- plot_pca(pts(), meancenter = meancenter)
+      pca_result(result)
+    })
+
+    shiny::observeEvent(input$done, {
+      shiny::stopApp(list(points = pts(), pca = pca_result()))
+    })
+
+    shiny::observeEvent(input$cancel, {
+      shiny::stopApp(NULL)
+    })
   }
-  
-  par(old_par)
-  
-  return(list(
-    points = points,
-    pca = pca
-  ))
+
+  old_opts <- options(shiny.quiet = TRUE)
+  on.exit(options(old_opts))
+  suppressMessages(
+    shiny::runGadget(ui, server, viewer = shiny::paneViewer())
+  )
 }
