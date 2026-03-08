@@ -9,7 +9,8 @@ Description: Collection of interactive, plotting, and computational functions
   that help teachers and students learn concepts in computational statistics. 
   Useful for in-class demonstrations, self-learning, and report generation.
 Imports:
-  manipulate
+  shiny,
+  miniUI
 Depends: R (>= 4.0.0)
 License: MIT
 Encoding: UTF-8
