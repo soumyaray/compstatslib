@@ -5,9 +5,6 @@
 \title{compstatslib interactive_t_test() function}
 \usage{
 interactive_t_test()
-
-One can click on the gear icon on the top-left corner of the plotting area to open the parameter settings.
-The movement of the alternative t-statistics distribution with respect to the null distribution will be visible, as well as the consequent change in statistical power.
 }
 \arguments{
 \item{diff}{The test difference.}
@@ -19,7 +16,15 @@ The movement of the alternative t-statistics distribution with respect to the nu
 \item{alpha}{Significance level.}
 }
 \description{
-Interactive visualization function that allows one to *manipulate* the parameters that affect hypothesis testing in order to see how their variation influences the null t and alternative t distributions, and statistical power.
+Interactive visualization that allows one to adjust the parameters affecting
+hypothesis testing in order to see how their variation influences the null t
+and alternative t distributions, and statistical power.
+}
+\details{
+Use the sliders in the viewer to adjust parameters. The movement of the
+alternative t-statistics distribution with respect to the null distribution
+will be visible, as well as the consequent change in statistical power.
+Click "Done" to close.
 }
 \seealso{
 \code{\link{plot_t_test}}

@@ -4,21 +4,27 @@
 \alias{interactive_pca}
 \title{compstatslib interactive_pca() function}
 \usage{
-interactive_pca()
-
-Click on the plotting area to add points and see corresponding principal components (hitting ESC will stop the simulation).
+interactive_pca(meancenter = TRUE)
 }
 \arguments{
-\item{meancenter}{A logical parameter that will mean center the points if set to TRUE, while it will not mean center the points if set to FALSE. By default it is set to TRUE.}
+\item{meancenter}{A logical parameter that will mean center the points if
+set to TRUE, while it will not mean center the points if set to FALSE. By
+default it is set to TRUE.}
 }
 \value{
-A dataframe containing the *x* and *y* coordinates of the points selected by the user, and a list of parameters related to the estimated principal components, including:
- \item{sdev}{A vector of the standard deviations of the estimated principal components.}
- \item{rotation}{A dataframe of the principal components coordinates.}
- \item{center}{A vector of length equal the number of columns of x can be supplied. The value is passed to *scale*.}
- \item{scale}{A logical value indicating whether the variables should be scaled to have unit variance before the analysis takes place. The default is FALSE.}
- \item{x}{A numeric or complex matrix (or data frame) which provides the data for the principal components analysis.}
+A list containing:
+ \item{points}{A dataframe with \code{x} and \code{y} coordinates.}
+ \item{pca}{The \code{prcomp} result if 3+ points were added, or
+ \code{NULL} otherwise.}
 }
 \description{
-Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates principal component vectors.
+Interactive visualization function that lets you point-and-click to add data
+points, while it automatically plots and updates principal component vectors.
+}
+\details{
+Click on the plotting area to add points and see corresponding principal
+components. Click "Done" to return results to the console.
+}
+\seealso{
+\code{\link{plot_pca}}
 }

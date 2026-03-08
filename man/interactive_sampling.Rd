@@ -6,22 +6,27 @@
 \usage{
 interactive_sampling()
 
-After running, click on the gears in the top-left of the plotting area to draw more samples or change simulation parameters.
+Use the controls in the viewer to draw more samples or change simulation
+parameters. Click "Done" to return results to the console.
 }
 \arguments{
-\item{population}{A \code{vector} of values following any population distribution you wish to simulate.}
+\item{population}{A \code{vector} of values following any population
+distribution you wish to simulate.}
 
 \item{sample_size}{The size of each sample to draw from the population}
 
-\item{theta}{The \code{function} that computes the statistic of interest from each sample (e.g., \code{mean} or \code{median}).}
+\item{theta}{The \code{function} that computes the statistic of interest
+from each sample (e.g., \code{mean} or \code{median}).}
 }
 \description{
-Interactive visualization to sample from a population and see how a given sampling statistic (theta) is distributed.
+Interactive visualization to sample from a population and see how a given
+sampling statistic (theta) is distributed.
 }
 \examples{
 \dontrun{
 interactive_sampling(rnorm(100000))
 
-interactive_sampling(c(rnorm(100000, mean = 4), rnorm(100000, mean=-4)), theta = median)
+interactive_sampling(c(rnorm(100000, mean = 4), rnorm(100000, mean=-4)),
+                     theta = median)
 }
 }
