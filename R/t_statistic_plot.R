@@ -11,7 +11,7 @@
 #' @param error_matrix Whether to display type I/II error matrix (defaults to FALSE).
 #' 
 #' @usage
-#' plot_t_test()
+#' plot_t_test(diff = 0.5, sd = 4, n = 100, alpha = 0.05, error_matrix = FALSE)
 #' 
 #' @examples
 #' plot_t_test()

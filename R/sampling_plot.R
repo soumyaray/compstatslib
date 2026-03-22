@@ -8,8 +8,8 @@
 #' 
 #' @return A \code{list} containing the population data, sample statistics, and other information of interest
 #' 
-#' @usage 
-#' plot_sampling()
+#' @usage
+#' plot_sampling(population, sample_size, theta, reps = 1)
 #'
 #' @examples
 #' \dontrun{

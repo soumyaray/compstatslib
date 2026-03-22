@@ -4,7 +4,7 @@
 \alias{plot_sampling}
 \title{compstatslib plot_sampling() function}
 \usage{
-plot_sampling()
+plot_sampling(population, sample_size, theta, reps = 1)
 }
 \arguments{
 \item{population}{A \code{vector} of values following any population distribution you wish to simulate.}

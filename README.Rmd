@@ -31,10 +31,12 @@ Three types of functions are made available:
 ### Statistical Tests
 
 - `interactive_t_test()` Interactive visualization function that will show you a simulation of null and alternative distributions of the t-statistic. You will be able to play with the different parameters that affect hypothesis tests in order to see how their variation influences the null t and alternative t distributions, as well as statistical power.
+- `plot_t_test()` Non-interactive visualization that plots null and alternative t distributions of a t-test. Shows the rejection zone and statistical power as shaded areas under the curves. Accepts parameters for the test difference, standard deviation, sample size, significance level, and an optional type I/II error matrix overlay.
 
 ### Statistical Sampling
 
 - `interactive_sampling()` Interactive sampling simulation that will sample given population data to show how a sampling statistic is distributed across repetitions of sampling exercise.
+- `plot_sampling()` Plotting function that shows the distribution of a population alongside samples drawn from it and the distribution of a given sampling statistic (e.g., mean or median).
 - `plot_sample_ci()` Simulated visualization of samples drawn from a given population function, with each sample's confidence intervals displayed.
 
 ### Linear Regression
@@ -50,6 +52,7 @@ Three types of functions are made available:
 ### Principal Components Analysis
 
 - `interactive_pca()` Interactive visualization function that lets you point-and-click to add data points, while it automatically plots and updates principal component vectors.
+- `plot_pca()` Plotting function that takes a dataframe of points (x, y) and plots them with their principal component vectors. Supports optional mean-centering.
 
 ### Precision
 
@@ -58,6 +61,7 @@ Three types of functions are made available:
 ### Linear Algebra
 
 - `interactive_matrix_inverse()` Interactive function that allows one to *manipulate* a matrix inversion.
+- `plot_matrix_inverse()` Plotting function that visualizes a matrix and its inverse as vector pairs, showing their geometric relationship.
 - `visualize_inverse()` Plotting function that helps visual an inverse.
 
 ## Installation

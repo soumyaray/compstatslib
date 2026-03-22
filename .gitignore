@@ -2,13 +2,14 @@
 .Rhistory
 .RData
 .Rproj.user
+README.html
 
 # AI tooling
 CLAUDE.local.md
 .claude/*
 !.claude/settings.json
 !.claude/skills/
-coverage/
+!.claude/CLAUDE.md
 
 # Sideways files (see tool: https://github.com/soumyaray/sideways)
 .swcopy
