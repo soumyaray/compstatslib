@@ -4,7 +4,7 @@
 \alias{plot_t_test}
 \title{compstatslib plot_t_test() function}
 \usage{
-plot_t_test()
+plot_t_test(diff = 0.5, sd = 4, n = 100, alpha = 0.05, error_matrix = FALSE)
 }
 \arguments{
 \item{diff}{The test difference (defaults to 0.5).}
