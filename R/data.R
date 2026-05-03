@@ -1,3 +1,5 @@
+utils::globalVariables("moderation_data")
+
 #' Synthetic moderation dataset
 #'
 #' A bundled synthetic dataset calibrated to show a clear interaction

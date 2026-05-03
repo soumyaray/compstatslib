@@ -55,5 +55,32 @@ test_that("Plotting PCA with 3+ points should return prcomp result", {
   expect_s3_class(result, "prcomp")
 })
 
+# 3D moderation plotting
+test_that("Plotting 3D moderation with defaults should not produce errors", {
+  expect_error(plot_moderation_3d(), NA)
+})
+
+test_that("Plotting 3D moderation with additive formula should not error", {
+  expect_error(plot_moderation_3d(y ~ x + z, moderation_data), NA)
+})
+
+test_that("Plotting 3D moderation with custom column names should not error", {
+  set.seed(1)
+  df <- data.frame(
+    out  = rnorm(50),
+    pred = rnorm(50),
+    modr = rnorm(50)
+  )
+  expect_error(plot_moderation_3d(out ~ pred * modr, df), NA)
+})
+
+test_that("Plotting 3D moderation returns a trellis object", {
+  result <- plot_moderation_3d()
+  expect_s3_class(result, "trellis")
+})
+
+test_that("Plotting 3D moderation with explicit zlim should not error", {
+  expect_error(plot_moderation_3d(zlim = c(-5, 10)), NA)
+})
 
 unlink("Rplots.pdf")
