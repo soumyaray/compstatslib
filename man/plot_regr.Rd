@@ -4,7 +4,7 @@
 \alias{plot_regr}
 \title{compstatslib plot_regr() function}
 \usage{
-plot_regr(points, ...)
+plot_regr(points, regression = TRUE, stats = TRUE)
 }
 \arguments{
 \item{points}{A \code{dataframe} of *x* and *y* coordinates to plot.}

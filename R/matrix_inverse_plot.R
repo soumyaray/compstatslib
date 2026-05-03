@@ -9,11 +9,10 @@
 #' @param x2 The first row (or column) vector of the inverse matrix A^(-1).
 #' 
 #' @param y2 The second row (or column) vector of the inverse matrix A^(-1).
-#' 
-#' @usage 
-#' plot_matrix_inverse(x1, y1, x2, y2)
-#' 
-#' The user can choose the magnitude of the vectors, which will be graphically represented by the function.
+#'
+#' @details
+#' The user can choose the magnitude of the vectors, which will be graphically
+#' represented by the function.
 #'
 #' @seealso \code{\link{interactive_matrix_inverse}}
 #'

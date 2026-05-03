@@ -3,3 +3,5 @@
 ^README\.Rmd$
 ^\.markdownlint\.json$
 ^CLAUDE\..*\.md$
+^docs$
+^\.claude$

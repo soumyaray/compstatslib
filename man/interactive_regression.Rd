@@ -36,6 +36,7 @@ Click on the plot area to add points and see a corresponding regression line.
 Click "Done" to return the points to the console.
 }
 \examples{
+\dontrun{
 # Selecting coordinates on the plot area, storing them in 'pts'
 pts <- interactive_regression()
 
@@ -48,7 +49,7 @@ points <- data.frame(x = c(1, 4, 7), y = c(2, 5, 8))
 
 # Replotting the coordinates and continuing the interactive regression
 interactive_regression(points)
-
+}
 }
 \seealso{
 \code{\link{plot_regr}}

@@ -4,10 +4,7 @@
 \alias{interactive_sampling}
 \title{compstatslib interactive_sampling() function}
 \usage{
-interactive_sampling()
-
-Use the controls in the viewer to draw more samples or change simulation
-parameters. Click "Done" to return results to the console.
+interactive_sampling(population, sample_size = 10, theta = mean)
 }
 \arguments{
 \item{population}{A \code{vector} of values following any population
@@ -21,6 +18,10 @@ from each sample (e.g., \code{mean} or \code{median}).}
 \description{
 Interactive visualization to sample from a population and see how a given
 sampling statistic (theta) is distributed.
+}
+\details{
+Use the controls in the viewer to draw more samples or change simulation
+parameters. Click "Done" to return results to the console.
 }
 \examples{
 \dontrun{

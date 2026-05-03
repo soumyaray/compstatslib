@@ -16,11 +16,13 @@ devtools::check()         # Full R CMD check
 ```
 
 Run a single test file:
+
 ```r
 testthat::test_file("tests/testthat/test-plots.R")
 ```
 
 Install from GitHub:
+
 ```r
 devtools::install_github("soumyaray/compstatslib")
 ```
@@ -43,6 +45,7 @@ Standalone utility: `precision.R` (machine precision demonstration).
 - **roxygen2** generates all documentation: never edit `NAMESPACE` or `man/*.Rd` files directly.
 - **README.md** is generated from `README.Rmd` — edit `README.Rmd` only, then run `devtools::build_readme()` to regenerate. Never edit `README.md` directly.
 - **testthat edition 3** for tests.
+- **Markdown linting** — after editing or creating any `.md` file, run `/ray-md-lint` to ensure it is lint-free.
 - Build options: `--no-multiarch --with-keep.source`
 
 ## Git Workflow

@@ -41,13 +41,14 @@ Click on the plotting area to add points and see a corresponding logistic
 regression curve. Click "Done" to return the points to the console.
 }
 \examples{
+\dontrun{
 # Selecting coordinates on the plot area, storing them in 'pts'
 pts <- interactive_logit()
 
 # Replotting the points stored earlier in 'pts', allowing the user to
 # continue the interactive regression
 interactive_logit(pts)
-
+}
 }
 \seealso{
 \code{\link{plot_logit}}

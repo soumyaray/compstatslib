@@ -28,13 +28,14 @@
 #' @seealso \code{\link{plot_logit}}
 #'
 #' @examples
+#' \dontrun{
 #' # Selecting coordinates on the plot area, storing them in 'pts'
 #' pts <- interactive_logit()
 #'
 #' # Replotting the points stored earlier in 'pts', allowing the user to
 #' # continue the interactive regression
 #' interactive_logit(pts)
-#'
+#' }
 #' @export
 interactive_logit <- function(points = data.frame(), formula = y ~ x,
                               min_x = 0, max_x = 50, ...) {

@@ -5,11 +5,12 @@
 #' @param population A \code{vector} of values following any population distribution you wish to simulate.
 #' @param sample_size The size of each sample to draw from the population
 #' @param theta The \code{function} that computes the statistic of interest from each sample (e.g., \code{mean} or \code{median}).
-#' 
+#' @param reps Number of repeated samples to draw on each call.
+#' @param vars Optional cached state from a previous call, used by
+#'   \code{interactive_sampling()} to accumulate samples across draws.
+#' @param replot_population Logical; whether to redraw the population panel.
+#'
 #' @return A \code{list} containing the population data, sample statistics, and other information of interest
-#' 
-#' @usage
-#' plot_sampling(population, sample_size, theta, reps = 1)
 #'
 #' @examples
 #' \dontrun{
