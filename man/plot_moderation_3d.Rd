@@ -7,6 +7,8 @@
 plot_moderation_3d(
   formula = y ~ x * z,
   data = moderation_data,
+  iv = NULL,
+  mod = NULL,
   z_rot = 40,
   x_rot = -70,
   zlim = NULL,
@@ -14,16 +16,24 @@ plot_moderation_3d(
 )
 }
 \arguments{
-\item{formula}{A model formula naming exactly three variables in
-DV/IV/Mod order — e.g. \code{y ~ x * z} for the interaction model
-or \code{y ~ x + z} for the additive comparison. The first
-right-hand-side variable is treated as the IV, the second as the
-moderator.}
+\item{formula}{A model formula. The first variable on the right-hand
+side is treated as the IV and the second as the moderator when the
+formula has exactly two predictors. With three or more predictors,
+you must specify \code{iv} and \code{mod} explicitly. Any formula
+structure R supports works (\code{x * z}, \code{x + z + x:z},
+\code{x:z}, transformations, etc.).}
 
-\item{data}{A data frame containing the three variables named in
+\item{data}{A data frame containing every variable named in
 \code{formula}. Defaults to the bundled
-\code{\link{moderation_data}} so the function can be called with
-no arguments.}
+\code{\link{moderation_data}}.}
+
+\item{iv}{Optional character. Name of the predictor to place on the
+first horizontal axis. Required when \code{formula} has more than
+two predictors.}
+
+\item{mod}{Optional character. Name of the predictor to place on the
+second horizontal axis. Required when \code{formula} has more than
+two predictors.}
 
 \item{z_rot}{Numeric. Rotation about the vertical axis, in degrees
 (lattice's \code{screen$z}). Default 40. Try 0 to align the IV
@@ -35,11 +45,7 @@ slope plane with the screen, or 270 for the moderator slope plane.}
 \item{zlim}{Numeric length-2 vector. Vertical-axis range. Default
 \code{NULL}, which uses the union of the actual outcome's range
 in \code{data} and the fitted-surface range over the prediction
-grid. This keeps slopes visually proportionate to observed
-variability when predictions sit inside the data range (common
-for weak / moderate effects), while preventing the surface from
-being clipped when extreme corners of a strong interaction model
-extrapolate past the data extent.}
+grid.}
 
 \item{...}{Further arguments forwarded to
 \code{\link[lattice]{wireframe}}.}
@@ -51,29 +57,36 @@ A \code{trellis} object (lattice surface). Print or assign to
 \description{
 Non-interactive visualization of a moderated regression. Fits an
 \code{lm()} from the supplied formula and data, predicts the outcome
-over a regular grid of the two predictors, and renders the fitted
-surface as a 3D wireframe with a height-mapped colour gradient.
+over a regular grid of the IV and moderator (any other predictors
+held at typical values), and renders the fitted surface as a 3D
+wireframe with a height-mapped colour gradient.
 }
 \details{
 The user's \code{formula} is fitted as-is via \code{lm()}, so any
-structure R's formula language supports works (\code{x * z},
-\code{x + z}, \code{x:z}, transformations, etc.). \code{predict()}
+structure R's formula language supports works. \code{predict()} then
 evaluates the fitted model at every point of an \code{expand.grid()}
-over the IV and moderator ranges (15 steps each). The resulting
-fitted surface is passed to \code{lattice::wireframe()} with
-\code{drape = TRUE} for a height-mapped colour gradient.
+over the IV and moderator ranges (15 steps each). Predictors other
+than the IV and moderator are held at typical values: \code{mean()}
+for numeric variables, the first level for factors, the
+lexicographically first value for character variables, and
+\code{FALSE} for logicals. This is a pedagogical simplification; if
+you need other hold-out values, fit \code{lm()} yourself and slice
+the surface manually.
 
-Note that the \emph{vertical} axis of the rendered plot depicts the
-outcome (DV) regardless of variable naming. With the bundled
+The \emph{vertical} axis of the rendered plot depicts the outcome
+(DV) regardless of variable naming. With the bundled
 \code{moderation_data} the moderator is named \code{z}, but \code{z}
 appears on a horizontal plot axis, not the vertical "z-axis" of the
 wireframe.
 
-This function uses a formula API (rather than column-name strings)
-because \code{predict.lm()} evaluates the user's formula natively
-over the prediction grid: writing \code{y ~ x + z} versus
-\code{y ~ x * z} switches between additive and interaction models
-with no special-casing inside the function.
+When the formula contains predictors beyond \code{iv} and \code{mod},
+a one-line \code{message()} is emitted noting that other predictors
+are held at their typical values. Suppress with
+\code{suppressMessages()}.
+
+\code{iv} and \code{mod} must be numeric. Categorical (factor or
+character) variables on the plot axes are not supported and will
+raise an error.
 }
 \examples{
 # Default synthetic example
@@ -90,6 +103,12 @@ my_df <- data.frame(
   dose  = rnorm(100)
 )
 plot_moderation_3d(score ~ time * dose, my_df)
+
+# Multi-predictor model — `w` is bundled noise, included as a
+# control. Pick which two predictors go on the plot axes; the rest
+# are held at typical values (here, `mean(w)`).
+plot_moderation_3d(y ~ x + z + w + x:z, moderation_data,
+                   iv = "x", mod = "z")
 
 }
 \seealso{

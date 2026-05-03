@@ -52,8 +52,8 @@ Three types of functions are made available:
 ### Moderation (Interaction Effects)
 
 - `interactive_moderation_3d()` Interactive Shiny gadget that fits a moderated regression and renders the fitted surface as a rotatable 3D wireframe. Two sliders control the viewing angle so students can see how an interaction term twists the surface relative to an additive (planar) model.
-- `plot_moderation_3d()` Non-interactive counterpart that returns a `lattice::wireframe` trellis object for the moderation surface. Accepts a model formula (`y ~ x * z` for interaction, `y ~ x + z` for additive) so the same function handles both comparisons.
-- `moderation_data` Bundled synthetic dataset used as the default example for the two functions above; calibrated to make the interaction effect visually obvious.
+- `plot_moderation_3d()` Non-interactive counterpart that returns a `lattice::wireframe` trellis object for the moderation surface. Accepts any model formula (`y ~ x * z`, `y ~ x + z`, or larger models with extra controls — pass `iv` and `mod` to choose which two predictors are plotted; the rest are held at typical values).
+- `moderation_data` Bundled synthetic dataset used as the default example for the two functions above; calibrated to make the interaction effect visually obvious. Includes an unrelated noise variable `w` for demonstrating multi-predictor formulas.
 
 ### Principal Components Analysis
 

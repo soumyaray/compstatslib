@@ -5,11 +5,16 @@
 \alias{moderation_data}
 \title{Synthetic moderation dataset}
 \format{
-A data frame with 200 rows and 3 numeric columns:
+A data frame with 200 rows and 4 numeric columns:
 \describe{
   \item{y}{Outcome (dependent variable).}
   \item{x}{Independent variable.}
   \item{z}{Moderator.}
+  \item{w}{Unrelated noise predictor — drawn independently of \code{x},
+    \code{z}, and \code{y}. Any correlation with \code{y} is spurious.
+    Useful for demonstrating that irrelevant predictors do not change
+    the IV/mod surface and for exercising the multi-predictor
+    \code{iv}/\code{mod} arguments of \code{\link{plot_moderation_3d}}.}
 }
 }
 \source{
@@ -27,7 +32,8 @@ with no arguments produces a working classroom demonstration.
 }
 \details{
 Generated as \code{y = 0.5*x + 0.3*z + 0.8*(x*z) + N(0, 1)} with
-\code{x, z ~ N(0, 2)}, \code{n = 200}, and \code{set.seed(42)}.
+\code{x, z, w ~ N(0, 2)} drawn independently, \code{n = 200}, and
+\code{set.seed(42)}.
 
 Variable names follow the moderation-literature convention (Aiken & West)
 where \code{y} is the outcome, \code{x} is the independent variable, and
@@ -37,5 +43,6 @@ plot axis depicts the outcome \code{y} regardless of variable naming.
 \examples{
 head(moderation_data)
 summary(lm(y ~ x * z, data = moderation_data))
+summary(lm(y ~ w, data = moderation_data))  # w is noise — no real effect
 }
 \keyword{datasets}

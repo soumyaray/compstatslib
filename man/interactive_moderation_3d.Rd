@@ -4,16 +4,32 @@
 \alias{interactive_moderation_3d}
 \title{compstatslib interactive_moderation_3d() function}
 \usage{
-interactive_moderation_3d(formula = y ~ x * z, data = moderation_data, ...)
+interactive_moderation_3d(
+  formula = y ~ x * z,
+  data = moderation_data,
+  iv = NULL,
+  mod = NULL,
+  ...
+)
 }
 \arguments{
-\item{formula}{A model formula naming exactly three variables in
-DV/IV/Mod order. Defaults to \code{y ~ x * z}, matching the
-bundled \code{\link{moderation_data}}.}
+\item{formula}{A model formula. With exactly two predictors the
+first is taken as the IV and the second as the moderator. With
+three or more predictors, you must supply \code{iv} and \code{mod}.
+Defaults to \code{y ~ x * z}, matching the bundled
+\code{\link{moderation_data}}.}
 
 \item{data}{A data frame containing the variables named in
 \code{formula}. Defaults to the bundled
 \code{\link{moderation_data}}.}
+
+\item{iv}{Optional character. Name of the predictor to place on the
+first horizontal axis. Required when \code{formula} has more than
+two predictors.}
+
+\item{mod}{Optional character. Name of the predictor to place on the
+second horizontal axis. Required when \code{formula} has more than
+two predictors.}
 
 \item{...}{Further arguments forwarded to
 \code{\link{plot_moderation_3d}} (and from there to
@@ -61,6 +77,12 @@ if (interactive()) {
     dose  = rnorm(100)
   )
   interactive_moderation_3d(score ~ time * dose, my_df)
+
+  # Multi-predictor model — `w` is bundled noise, included as a
+  # control. Pick which two predictors go on the plot axes; the
+  # rest are held at typical values (here, `mean(w)`).
+  interactive_moderation_3d(y ~ x + z + w + x:z, moderation_data,
+                            iv = "x", mod = "z")
 }
 
 }

@@ -6,12 +6,20 @@
 #' demos to show how the interaction-induced surface twist becomes
 #' visible (or vanishes) under different viewing angles.
 #'
-#' @param formula A model formula naming exactly three variables in
-#'   DV/IV/Mod order. Defaults to \code{y ~ x * z}, matching the
-#'   bundled \code{\link{moderation_data}}.
+#' @param formula A model formula. With exactly two predictors the
+#'   first is taken as the IV and the second as the moderator. With
+#'   three or more predictors, you must supply \code{iv} and \code{mod}.
+#'   Defaults to \code{y ~ x * z}, matching the bundled
+#'   \code{\link{moderation_data}}.
 #' @param data A data frame containing the variables named in
 #'   \code{formula}. Defaults to the bundled
 #'   \code{\link{moderation_data}}.
+#' @param iv Optional character. Name of the predictor to place on the
+#'   first horizontal axis. Required when \code{formula} has more than
+#'   two predictors.
+#' @param mod Optional character. Name of the predictor to place on the
+#'   second horizontal axis. Required when \code{formula} has more than
+#'   two predictors.
 #' @param ... Further arguments forwarded to
 #'   \code{\link{plot_moderation_3d}} (and from there to
 #'   \code{\link[lattice]{wireframe}}).
@@ -54,11 +62,19 @@
 #'     dose  = rnorm(100)
 #'   )
 #'   interactive_moderation_3d(score ~ time * dose, my_df)
+#'
+#'   # Multi-predictor model — `w` is bundled noise, included as a
+#'   # control. Pick which two predictors go on the plot axes; the
+#'   # rest are held at typical values (here, `mean(w)`).
+#'   interactive_moderation_3d(y ~ x + z + w + x:z, moderation_data,
+#'                             iv = "x", mod = "z")
 #' }
 #'
 #' @export
 interactive_moderation_3d <- function(formula = y ~ x * z,
-                                      data    = moderation_data,
+                                      data    = moderation_data, # nolint: object_usage_linter
+                                      iv      = NULL,
+                                      mod     = NULL,
                                       ...) {
   dot_args <- list(...)
 
@@ -89,11 +105,18 @@ interactive_moderation_3d <- function(formula = y ~ x * z,
   )
 
   server <- function(input, output, session) {
+    first_render <- shiny::reactiveVal(TRUE)
     output$wire <- shiny::renderPlot({
-      do.call(plot_moderation_3d,
-              c(list(formula = formula, data = data,
-                     z_rot = input$z_rot, x_rot = input$x_rot),
-                dot_args))
+      call_args <- c(list(formula = formula, data = data,
+                          iv = iv, mod = mod,
+                          z_rot = input$z_rot, x_rot = input$x_rot),
+                     dot_args)
+      if (first_render()) {
+        first_render(FALSE)
+        do.call(plot_moderation_3d, call_args)
+      } else {
+        suppressMessages(do.call(plot_moderation_3d, call_args))
+      }
     })
 
     shiny::observeEvent(input$done, {

@@ -2,18 +2,25 @@
 #'
 #' Non-interactive visualization of a moderated regression. Fits an
 #' \code{lm()} from the supplied formula and data, predicts the outcome
-#' over a regular grid of the two predictors, and renders the fitted
-#' surface as a 3D wireframe with a height-mapped colour gradient.
+#' over a regular grid of the IV and moderator (any other predictors
+#' held at typical values), and renders the fitted surface as a 3D
+#' wireframe with a height-mapped colour gradient.
 #'
-#' @param formula A model formula naming exactly three variables in
-#'   DV/IV/Mod order — e.g. \code{y ~ x * z} for the interaction model
-#'   or \code{y ~ x + z} for the additive comparison. The first
-#'   right-hand-side variable is treated as the IV, the second as the
-#'   moderator.
-#' @param data A data frame containing the three variables named in
+#' @param formula A model formula. The first variable on the right-hand
+#'   side is treated as the IV and the second as the moderator when the
+#'   formula has exactly two predictors. With three or more predictors,
+#'   you must specify \code{iv} and \code{mod} explicitly. Any formula
+#'   structure R supports works (\code{x * z}, \code{x + z + x:z},
+#'   \code{x:z}, transformations, etc.).
+#' @param data A data frame containing every variable named in
 #'   \code{formula}. Defaults to the bundled
-#'   \code{\link{moderation_data}} so the function can be called with
-#'   no arguments.
+#'   \code{\link{moderation_data}}.
+#' @param iv Optional character. Name of the predictor to place on the
+#'   first horizontal axis. Required when \code{formula} has more than
+#'   two predictors.
+#' @param mod Optional character. Name of the predictor to place on the
+#'   second horizontal axis. Required when \code{formula} has more than
+#'   two predictors.
 #' @param z_rot Numeric. Rotation about the vertical axis, in degrees
 #'   (lattice's \code{screen$z}). Default 40. Try 0 to align the IV
 #'   slope plane with the screen, or 270 for the moderator slope plane.
@@ -22,11 +29,7 @@
 #' @param zlim Numeric length-2 vector. Vertical-axis range. Default
 #'   \code{NULL}, which uses the union of the actual outcome's range
 #'   in \code{data} and the fitted-surface range over the prediction
-#'   grid. This keeps slopes visually proportionate to observed
-#'   variability when predictions sit inside the data range (common
-#'   for weak / moderate effects), while preventing the surface from
-#'   being clipped when extreme corners of a strong interaction model
-#'   extrapolate past the data extent.
+#'   grid.
 #' @param ... Further arguments forwarded to
 #'   \code{\link[lattice]{wireframe}}.
 #'
@@ -35,24 +38,30 @@
 #'
 #' @details
 #' The user's \code{formula} is fitted as-is via \code{lm()}, so any
-#' structure R's formula language supports works (\code{x * z},
-#' \code{x + z}, \code{x:z}, transformations, etc.). \code{predict()}
+#' structure R's formula language supports works. \code{predict()} then
 #' evaluates the fitted model at every point of an \code{expand.grid()}
-#' over the IV and moderator ranges (15 steps each). The resulting
-#' fitted surface is passed to \code{lattice::wireframe()} with
-#' \code{drape = TRUE} for a height-mapped colour gradient.
+#' over the IV and moderator ranges (15 steps each). Predictors other
+#' than the IV and moderator are held at typical values: \code{mean()}
+#' for numeric variables, the first level for factors, the
+#' lexicographically first value for character variables, and
+#' \code{FALSE} for logicals. This is a pedagogical simplification; if
+#' you need other hold-out values, fit \code{lm()} yourself and slice
+#' the surface manually.
 #'
-#' Note that the \emph{vertical} axis of the rendered plot depicts the
-#' outcome (DV) regardless of variable naming. With the bundled
+#' The \emph{vertical} axis of the rendered plot depicts the outcome
+#' (DV) regardless of variable naming. With the bundled
 #' \code{moderation_data} the moderator is named \code{z}, but \code{z}
 #' appears on a horizontal plot axis, not the vertical "z-axis" of the
 #' wireframe.
 #'
-#' This function uses a formula API (rather than column-name strings)
-#' because \code{predict.lm()} evaluates the user's formula natively
-#' over the prediction grid: writing \code{y ~ x + z} versus
-#' \code{y ~ x * z} switches between additive and interaction models
-#' with no special-casing inside the function.
+#' When the formula contains predictors beyond \code{iv} and \code{mod},
+#' a one-line \code{message()} is emitted noting that other predictors
+#' are held at their typical values. Suppress with
+#' \code{suppressMessages()}.
+#'
+#' \code{iv} and \code{mod} must be numeric. Categorical (factor or
+#' character) variables on the plot axes are not supported and will
+#' raise an error.
 #'
 #' @seealso \code{\link{interactive_moderation_3d}} for the rotatable
 #'   Shiny gadget version; \code{\link{moderation_data}} for the
@@ -74,27 +83,67 @@
 #' )
 #' plot_moderation_3d(score ~ time * dose, my_df)
 #'
+#' # Multi-predictor model — `w` is bundled noise, included as a
+#' # control. Pick which two predictors go on the plot axes; the rest
+#' # are held at typical values (here, `mean(w)`).
+#' plot_moderation_3d(y ~ x + z + w + x:z, moderation_data,
+#'                    iv = "x", mod = "z")
+#'
 #' @importFrom stats lm predict reformulate
 #' @export
 plot_moderation_3d <- function(formula = y ~ x * z,
-                               data    = moderation_data,
+                               data    = moderation_data, # nolint: object_usage_linter
+                               iv      = NULL,
+                               mod     = NULL,
                                z_rot   = 40,
                                x_rot   = -70,
                                zlim    = NULL,
                                ...) {
   vars <- all.vars(formula)
-  if (length(vars) != 3) {
-    stop("`formula` must name exactly three variables (DV, IV, moderator). ",
+  if (length(vars) < 3) {
+    stop("`formula` must name a DV and at least two predictors. ",
          "Got: ", paste(vars, collapse = ", "))
   }
-  dv  <- vars[1]
-  iv  <- vars[2]
-  mod <- vars[3]
+  dv         <- vars[1]
+  predictors <- vars[-1]
+
+  if (is.null(iv) && is.null(mod)) {
+    if (length(predictors) == 2) {
+      iv  <- predictors[1]
+      mod <- predictors[2]
+    } else {
+      stop("With more than two predictors in `formula`, you must specify ",
+           "`iv` and `mod` to choose which two appear on the plot axes. ",
+           "Predictors found: ", paste(predictors, collapse = ", "))
+    }
+  } else if (is.null(iv) || is.null(mod)) {
+    stop("Specify both `iv` and `mod`, or neither.")
+  }
+
+  if (!iv %in% predictors) {
+    stop("`iv = \"", iv, "\"` is not a predictor in `formula`.")
+  }
+  if (!mod %in% predictors) {
+    stop("`mod = \"", mod, "\"` is not a predictor in `formula`.")
+  }
+  if (iv == mod) {
+    stop("`iv` and `mod` must name different variables.")
+  }
 
   missing_cols <- setdiff(vars, names(data))
   if (length(missing_cols) > 0) {
     stop("`data` is missing columns named in formula: ",
          paste(missing_cols, collapse = ", "))
+  }
+
+  for (axis_name in c("iv", "mod")) {
+    axis_var <- get(axis_name)
+    if (!is.numeric(data[[axis_var]])) {
+      stop("`", axis_name, " = \"", axis_var, "\"` is ",
+           paste(class(data[[axis_var]]), collapse = "/"),
+           "; plot_moderation_3d() does not support categorical variables ",
+           "on the plot axes.")
+    }
   }
 
   fit <- lm(formula, data = data)
@@ -106,6 +155,14 @@ plot_moderation_3d <- function(formula = y ~ x * z,
     ),
     c(iv, mod)
   )
+
+  for (nm in setdiff(predictors, c(iv, mod))) {
+    grid[[nm]] <- hold_value(data[[nm]])
+  }
+
+  msg <- describe_holds(predictors, iv, mod, data, dv)
+  if (!is.null(msg)) message(msg)
+
   grid[[dv]] <- predict(fit, grid)
 
   if (is.null(zlim)) zlim <- range(c(data[[dv]], grid[[dv]]))
@@ -119,5 +176,30 @@ plot_moderation_3d <- function(formula = y ~ x * z,
     screen   = list(z = z_rot, x = x_rot),
     zlim     = zlim,
     ...
+  )
+}
+
+hold_value <- function(x) {
+  if (is.numeric(x)) {
+    mean(x, na.rm = TRUE)
+  } else if (is.factor(x)) {
+    factor(levels(x)[1], levels = levels(x))
+  } else if (is.character(x)) {
+    sort(unique(x))[1]
+  } else if (is.logical(x)) {
+    FALSE
+  } else {
+    stop("Cannot hold variable of class ", paste(class(x), collapse = "/"),
+         " at a typical value. Drop it from the model or recode it.")
+  }
+}
+
+describe_holds <- function(predictors, iv, mod, data, dv) {
+  others <- setdiff(predictors, c(iv, mod))
+  if (length(others) == 0) return(NULL)
+
+  paste0(
+    "Surface shows predicted ", dv, " over ", iv, " and ", mod,
+    ". Other predictors are held at their typical values."
   )
 }

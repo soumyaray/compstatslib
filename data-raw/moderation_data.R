@@ -14,6 +14,12 @@ x <- rnorm(n, mean = 0, sd = 2)
 z <- rnorm(n, mean = 0, sd = 2)
 y <- 0.5 * x + 0.3 * z + 0.8 * x * z + rnorm(n, sd = 1)
 
-moderation_data <- data.frame(y = y, x = x, z = z)
+# `w` is an unrelated noise variable. Drawn independently of x, z, and y;
+# any correlation with y is spurious. Useful for showing students that
+# adding irrelevant predictors does not change the IV/mod surface and
+# for demonstrating the multi-predictor `iv`/`mod` arguments.
+w <- rnorm(n, mean = 0, sd = 2)
+
+moderation_data <- data.frame(y = y, x = x, z = z, w = w)
 
 usethis::use_data(moderation_data, overwrite = TRUE)

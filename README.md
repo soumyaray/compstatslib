@@ -78,11 +78,13 @@ Three types of functions are made available:
   (planar) model.
 - `plot_moderation_3d()` Non-interactive counterpart that returns a
   `lattice::wireframe` trellis object for the moderation surface.
-  Accepts a model formula (`y ~ x * z` for interaction, `y ~ x + z` for
-  additive) so the same function handles both comparisons.
+  Accepts any model formula (`y ~ x * z`, `y ~ x + z`, or larger models
+  with extra controls — pass `iv` and `mod` to choose which two
+  predictors are plotted; the rest are held at typical values).
 - `moderation_data` Bundled synthetic dataset used as the default
   example for the two functions above; calibrated to make the
-  interaction effect visually obvious.
+  interaction effect visually obvious. Includes an unrelated noise
+  variable `w` for demonstrating multi-predictor formulas.
 
 ### Principal Components Analysis
 
