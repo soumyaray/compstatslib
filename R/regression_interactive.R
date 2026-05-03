@@ -29,6 +29,7 @@
 #' @seealso \code{\link{plot_regr}}
 #'
 #' @examples
+#' \dontrun{
 #' # Selecting coordinates on the plot area, storing them in 'pts'
 #' pts <- interactive_regression()
 #'
@@ -41,7 +42,7 @@
 #'
 #' # Replotting the coordinates and continuing the interactive regression
 #' interactive_regression(points)
-#'
+#' }
 #' @export
 interactive_regression <- function(points = data.frame(), ...) {
   dot_args <- list(...)
