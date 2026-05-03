@@ -69,6 +69,21 @@ Three types of functions are made available:
   (x, y) and plots them with a logistic regression curve and associated
   statistics.
 
+### Moderation (Interaction Effects)
+
+- `interactive_moderation_3d()` Interactive Shiny gadget that fits a
+  moderated regression and renders the fitted surface as a rotatable 3D
+  wireframe. Two sliders control the viewing angle so students can see
+  how an interaction term twists the surface relative to an additive
+  (planar) model.
+- `plot_moderation_3d()` Non-interactive counterpart that returns a
+  `lattice::wireframe` trellis object for the moderation surface.
+  Accepts a model formula (`y ~ x * z` for interaction, `y ~ x + z` for
+  additive) so the same function handles both comparisons.
+- `moderation_data` Bundled synthetic dataset used as the default
+  example for the two functions above; calibrated to make the
+  interaction effect visually obvious.
+
 ### Principal Components Analysis
 
 - `interactive_pca()` Interactive visualization function that lets you
