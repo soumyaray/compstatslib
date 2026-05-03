@@ -4,7 +4,13 @@
 \alias{plot_sample_ci}
 \title{compstatslib plot_sample_ci() function}
 \usage{
-plot_sample_ci()
+plot_sample_ci(
+  num_samples = 100,
+  sample_size = 100,
+  pop_size = 10000,
+  distr_func = rnorm,
+  ...
+)
 }
 \arguments{
 \item{num_samples}{Number of the samples to draw from the population.}

@@ -6,15 +6,6 @@
 \usage{
 interactive_t_test()
 }
-\arguments{
-\item{diff}{The test difference.}
-
-\item{sd}{Population standard deviation.}
-
-\item{n}{Sample size.}
-
-\item{alpha}{Significance level.}
-}
 \description{
 Interactive visualization that allows one to adjust the parameters affecting
 hypothesis testing in order to see how their variation influences the null t

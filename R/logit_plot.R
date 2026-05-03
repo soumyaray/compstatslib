@@ -14,16 +14,20 @@
 #' @param stats Logical parameter of whether to display relevant statistics on
 #' the plot area (TRUE by default).
 #' The following parameters are provided on the plot area:
-#' \enumerate{
+#' \describe{
 #'  \item{Intercept}{The intercept of the logistic regression.}
 #'  \item{Coefficient}{The coefficient of the independent variable.}
 #'  \item{AIC}{An information theoretic fit criterion.}
 #' }
 #'
-#' @return A \code{dataframe} containing the points coordinates.
+#' @param min_x Minimum x value for the plot range.
 #'
-#' @usage
-#' plot_logit(points, ...)
+#' @param max_x Maximum x value for the plot range.
+#'
+#' @param legend_loc Position of the statistics legend on the plot
+#' (e.g., "topleft", "bottomright").
+#'
+#' @return A \code{dataframe} containing the points coordinates.
 #'
 #' @seealso \code{\link{interactive_regression}}
 #'
@@ -49,7 +53,7 @@ plot_logit <- function(points, formula = y ~ x, regression = TRUE, stats = TRUE,
   }
 
   # Plot points
-  compstatslib:::plot_points_logit(points, min_x, max_x)
+  plot_points_logit(points, min_x, max_x)
 
   if (nrow(points) < 2) return()
 

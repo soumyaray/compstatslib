@@ -3,7 +3,7 @@
 #' Interactive function that allows one to visualize a matrix inversion
 #' using sliders to adjust matrix parameters.
 #'
-#' Inspired by: \link{https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830?newreg=d55776428dd2418e8a6a971dfdbfa17}
+#' Inspired by: \url{https://math.stackexchange.com/questions/295250/geometric-interpretations-of-matrix-inverses/1922830#1922830}
 #'
 #' @param x1_init The first row (or column) vector of matrix A. This parameter is set to 1 by default.
 #'

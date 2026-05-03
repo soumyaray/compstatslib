@@ -4,7 +4,14 @@
 \alias{plot_sampling}
 \title{compstatslib plot_sampling() function}
 \usage{
-plot_sampling(population, sample_size, theta, reps = 1)
+plot_sampling(
+  population,
+  sample_size,
+  theta,
+  reps = 1,
+  vars = NULL,
+  replot_population = TRUE
+)
 }
 \arguments{
 \item{population}{A \code{vector} of values following any population distribution you wish to simulate.}
@@ -12,6 +19,13 @@ plot_sampling(population, sample_size, theta, reps = 1)
 \item{sample_size}{The size of each sample to draw from the population}
 
 \item{theta}{The \code{function} that computes the statistic of interest from each sample (e.g., \code{mean} or \code{median}).}
+
+\item{reps}{Number of repeated samples to draw on each call.}
+
+\item{vars}{Optional cached state from a previous call, used by
+\code{interactive_sampling()} to accumulate samples across draws.}
+
+\item{replot_population}{Logical; whether to redraw the population panel.}
 }
 \value{
 A \code{list} containing the population data, sample statistics, and other information of interest

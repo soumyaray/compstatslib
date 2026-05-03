@@ -17,10 +17,7 @@
 #'  \item{SSE}{The sum of squares error.}
 #'  \item{SST}{The sum of squares total.}
 #'  \item{R-squared}{The multiple coefficient of determination.}
-#' 
-#' @usage 
-#' plot_regr(points, ...)
-#' 
+#'
 #' @seealso \code{\link{interactive_regression}}
 #' 
 #' @examples

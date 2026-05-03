@@ -1,4 +1,21 @@
-utils::globalVariables("moderation_data")
+utils::globalVariables(c("moderation_data", "pca_degenerate"))
+
+#' Degenerate PCA demo dataset
+#'
+#' A small two-column dataset used to demonstrate a degenerate PCA case where
+#' the variance is concentrated almost entirely along one axis, producing a
+#' near-singular principal component structure.
+#'
+#' @format A data frame with 16 rows and 2 numeric columns:
+#' \describe{
+#'   \item{x}{Horizontal coordinate.}
+#'   \item{y}{Vertical coordinate.}
+#' }
+#'
+#' @examples
+#' head(pca_degenerate)
+"pca_degenerate"
+
 
 #' Synthetic moderation dataset
 #'

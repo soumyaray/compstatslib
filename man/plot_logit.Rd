@@ -4,7 +4,15 @@
 \alias{plot_logit}
 \title{compstatslib plot_logit() function}
 \usage{
-plot_logit(points, ...)
+plot_logit(
+  points,
+  formula = y ~ x,
+  regression = TRUE,
+  stats = TRUE,
+  min_x = 0,
+  max_x = 1,
+  legend_loc = "topleft"
+)
 }
 \arguments{
 \item{points}{A \code{dataframe} of *x* and *y* coordinates to plot.}
@@ -18,11 +26,18 @@ plot_logit(points, ...)
 \item{stats}{Logical parameter of whether to display relevant statistics on
 the plot area (TRUE by default).
 The following parameters are provided on the plot area:
-\enumerate{
+\describe{
  \item{Intercept}{The intercept of the logistic regression.}
  \item{Coefficient}{The coefficient of the independent variable.}
  \item{AIC}{An information theoretic fit criterion.}
 }}
+
+\item{min_x}{Minimum x value for the plot range.}
+
+\item{max_x}{Maximum x value for the plot range.}
+
+\item{legend_loc}{Position of the statistics legend on the plot
+(e.g., "topleft", "bottomright").}
 }
 \value{
 A \code{dataframe} containing the points coordinates.

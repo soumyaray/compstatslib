@@ -8,9 +8,6 @@
 #' @param distr_func Random data generation function to simulate the population 
 #'                   data (e.g., \code{rnorm} or \code{runif}).
 #' @param ... Parameters to pass to the \code{distr_func} function specified.
-#' 
-#' @usage 
-#' plot_sample_ci()
 #'
 #' @examples
 #' \dontrun{

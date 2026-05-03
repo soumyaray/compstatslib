@@ -9,9 +9,7 @@
 #' @param theta The \code{function} that computes the statistic of interest
 #'   from each sample (e.g., \code{mean} or \code{median}).
 #'
-#' @usage
-#' interactive_sampling()
-#'
+#' @details
 #' Use the controls in the viewer to draw more samples or change simulation
 #' parameters. Click "Done" to return results to the console.
 #'

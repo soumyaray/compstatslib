@@ -4,11 +4,6 @@
 #' hypothesis testing in order to see how their variation influences the null t
 #' and alternative t distributions, and statistical power.
 #'
-#' @param diff The test difference.
-#' @param sd Population standard deviation.
-#' @param n Sample size.
-#' @param alpha Significance level.
-#'
 #' @details
 #' Use the sliders in the viewer to adjust parameters. The movement of the
 #' alternative t-statistics distribution with respect to the null distribution

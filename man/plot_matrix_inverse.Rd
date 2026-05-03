@@ -5,8 +5,6 @@
 \title{compstatslib plot_matrix_inverse() function}
 \usage{
 plot_matrix_inverse(x1, y1, x2, y2)
-
-The user can choose the magnitude of the vectors, which will be graphically represented by the function.
 }
 \arguments{
 \item{x1}{The first row (or column) vector of matrix A.}
@@ -19,6 +17,10 @@ The user can choose the magnitude of the vectors, which will be graphically repr
 }
 \description{
 Non-interactive plotting function that helps visualize an inverse.
+}
+\details{
+The user can choose the magnitude of the vectors, which will be graphically
+represented by the function.
 }
 \seealso{
 \code{\link{interactive_matrix_inverse}}
