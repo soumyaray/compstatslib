@@ -4,6 +4,9 @@
 .Rproj.user
 README.html
 
+# Temporary development files
+tmp/
+
 # AI tooling
 CLAUDE.local.md
 .claude/*
