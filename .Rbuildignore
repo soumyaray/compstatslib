@@ -10,3 +10,7 @@
 ^\.github$
 ^LICENSE\.md$
 ^data-raw$
+^\.RData$
+^\.Rhistory$
+^\.swcopy$
+^\.swsymlink$
