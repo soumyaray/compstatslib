@@ -1,7 +1,7 @@
 Package: compstatslib
 Type: Package
 Title: Interactive tools and plotting functions to teach or learn basic concepts in computational statistics
-Version: 0.7.0
+Version: 0.7.1
 Date: 2026-05-11
 Authors@R: c(person("Soumya", "Ray", email = "soumya.ray@gmail.com", role = c("aut", "cre", "ths")),
              person("Daniele", "Melotti", email = "danielemelotti@hotmail.com", role = c("aut")))
@@ -13,7 +13,7 @@ Imports:
   miniUI,
   plotly,
   shiny
-Depends: R (>= 4.0.0)
+Depends: R (>= 4.1.0)
 License: MIT
 Encoding: UTF-8
 RoxygenNote: 7.3.2

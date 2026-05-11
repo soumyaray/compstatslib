@@ -40,7 +40,7 @@ Standalone utility: `precision.R` (machine precision demonstration).
 
 ## Key Conventions
 
-- **R >= 4.0.0** required. Do NOT use native pipe `|>` (requires R 4.1+); use `%>%` or nested calls instead.
+- **R >= 4.1.0** required.
 - **Base R graphics only** — no ggplot2.
 - **roxygen2** generates all documentation: never edit `NAMESPACE` or `man/*.Rd` files directly.
 - **README.md** is generated from `README.Rmd` — edit `README.Rmd` only, then run `devtools::build_readme()` to regenerate. Never edit `README.md` directly.
