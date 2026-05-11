@@ -86,6 +86,23 @@ Three types of functions are made available:
   interaction effect visually obvious. Includes an unrelated noise
   variable `w` for demonstrating multi-predictor formulas.
 
+### 3D Scatterplots
+
+- `interactive_scatter3d()` Interactive Shiny gadget for exploring three
+  numeric columns of a data frame as a rotatable 3D point cloud. Column
+  pickers swap x / y / z (and an optional colour mapping) at runtime;
+  aspect, opacity, and marker-size sliders tune the view. Rotation and
+  zoom persist across slider/picker changes within the gadget. On Done,
+  prints a reproducible `plot_scatter3d(...)` call to the console —
+  including the captured camera position — so the exact rotation and
+  zoom can be pasted into an Rmd or script.
+- `plot_scatter3d()` Non-interactive counterpart that returns a `plotly`
+  htmlwidget for a 3D scatterplot of three numeric columns. Supports
+  optional colour mapping (numeric → continuous scale; factor /
+  character → discrete palette), aspect-ratio control, marker opacity /
+  size, custom axis titles, and an explicit `camera` argument for
+  reproducing a specific view captured from the gadget.
+
 ### Principal Components Analysis
 
 - `interactive_pca()` Interactive visualization function that lets you
