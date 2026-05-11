@@ -82,3 +82,234 @@ Console message follows the same one-line convention.
   works as the default example for the continuous-moderator branch;
   the binary-moderator branch needs either a small bundled binary
   dataset or a `factor(z > 0)` derivation in the examples.
+
+## Accept string **and** NSE column references across model-relevant functions
+
+### Motivation
+
+Most plotting/model functions in the package currently accept column
+references as character strings (e.g. `plot_scatter3d(df, x = "hj")`). Strings
+are simple, easy to validate, and trivial to pass programmatically. The
+deferred alternative is **formula-style NSE**: `plot_scatter3d(df, x = ~hj)`,
+matching plotly / lattice / lme4 idioms. NSE's one real functional gain
+is inline expressions — `x = ~log(hj)`, `x = ~hj / X110h` — letting
+users transform on the fly without pre-computing a column. For a
+teaching package this is a double-edged sword (pre-computing makes the
+transform visible in user code), but it's a real ergonomic gain for
+report writers porting plotly snippets from the wild.
+
+This is a package-wide ergonomics question, not a per-function one —
+should be designed once across all model/plot entry points so users
+don't have to remember which functions accept which form.
+
+### Sketch
+
+Each affected function accepts either form for its column arguments:
+
+```r
+plot_scatter3d(df, x = "hj",      y = "X100m",    z = "X110h")     # string
+plot_scatter3d(df, x = ~hj,       y = ~X100m,     z = ~X110h)      # NSE name
+plot_scatter3d(df, x = ~log(hj),  y = ~X100m,     z = ~X110h)      # NSE expr
+```
+
+A small internal helper would normalize either form: if the arg is a
+one-sided formula, evaluate its RHS in the `data` environment and use
+the result; if it's a character, treat it as a column name. Validation
+("column exists / column is numeric") works for the string form; for
+the NSE form, validation reduces to "the expression evaluates without
+error and yields a numeric vector of length `nrow(data)`."
+
+### Affected functions (candidate list)
+
+`plot_scatter3d()`, `interactive_scatter3d()`, `plot_logit()`, `plot_regr()`,
+`plot_pca()`, `plot_moderation()` (if/when added), and any future
+visualization that takes column references. Functions that already
+take a `formula` argument (e.g. `plot_moderation_3d()`) are out —
+their formula is a model spec, not column-picking.
+
+### Open questions
+
+1. **Internal helper API.** A single `.resolve_col(arg, data, name)`
+   that returns a numeric vector and a display label (for axis titles)
+   would centralize the dispatch. Implementation choice: base R
+   (`is.character()` / `inherits(arg, "formula")` / `eval(arg[[2]],
+   data)`) is sufficient — no need to add `rlang`.
+2. **Display labels.** For `x = "hj"` the axis title is obvious. For
+   `x = ~log(hj)` it should probably be `"log(hj)"` — i.e.
+   `deparse(arg[[2]])`. Confirm this reads sensibly for compound
+   expressions.
+3. **Programmatic-use ergonomics.** Users holding a column name in a
+   variable should still have a clean path: `plot_scatter3d(df, x = colname)`
+   when `colname <- "hj"` already works under the string branch. Make
+   sure adding NSE doesn't break or shadow that.
+4. **Documentation cost.** Every `@param` for a column-reference
+   argument needs to document both forms with an example. Non-trivial
+   doc churn — worth doing in one sweep, not piecemeal.
+5. **Ordering.** Roll out alongside or after a 1.0 release? This is a
+   surface-area change to many user-facing functions; ideally bundled
+   into one minor version with a clear changelog entry.
+
+### Out of scope
+
+- Tidy-eval / `rlang` quosures. Base R's formula handling is enough
+  for the use cases above and avoids pulling in tidyverse machinery.
+- Bare-symbol NSE (`x = hj` without the `~`). Requires `substitute()`
+  in every entry point and breaks programmatic use without an escape
+  hatch. The `~` is a small price for a much cleaner implementation.
+
+### Related
+
+- Decided against NSE for `plot_scatter3d()` in the `feature-interactive-plot3d`
+  branch (Q1 of that plan). Reason: consistency with the rest of the
+  package and simpler validation. This entry captures the option for a
+  future package-wide sweep rather than a piecemeal adoption.
+
+## `plot_scatter3d()` — non-numeric axis support (Date / POSIXct / factor)
+
+### Motivation
+
+`plot_scatter3d()` v1 (shipped in `feature-interactive-plot3d`) enforces a
+numeric-only contract for its x / y / z axes — matching
+`plot_moderation_3d()` and the textbook "rotatable quantitative point
+cloud" metaphor. plotly itself happily renders categorical axes
+(discrete tick positions per unique factor/string value) and date
+axes (formatted POSIXct/Date ticks), so two real use cases are
+deferred rather than impossible:
+
+- **Time-series 3D demos**: plotting two quantitative variables
+  against a Date or POSIXct timestamp on the z-axis ("how do x and y
+  evolve over time, viewed as a trajectory").
+- **Grouped position separation**: putting a 3-to-5-level factor on
+  one axis so each group occupies its own slab in the cube. Today
+  the package-recommended pattern is to put the group in `color`
+  instead; this is usually right but not always (e.g. when the user
+  also wants to color by a fourth continuous variable).
+
+### Sketch
+
+Loosen the axis-type guard in `plot_scatter3d()`:
+
+- `is.numeric(col)` → numeric axis (today's only path).
+- `inherits(col, c("Date", "POSIXct", "POSIXlt"))` → forward to
+  plotly with `axis.type = "date"`. Verify axis labels render
+  readably under rotation.
+- `is.factor(col) || is.character(col) || is.logical(col)` →
+  categorical axis. Cap the number of unique values
+  (e.g. error above ~10) to prevent unreadable tick spam.
+
+`interactive_scatter3d()`'s axis pickers would correspondingly broaden
+beyond "numeric columns only".
+
+### Open questions
+
+1. **Type coercion vs. error.** Logical → numeric (0/1) coercion is
+   tempting but loses information vs. the discrete-axis treatment.
+   Pick one path per type, document, stick to it.
+2. **Aspect ratio under mixed axis types.** The current `aspect`
+   argument assumes commensurable numeric ranges. Date and
+   categorical axes don't compose with `aspect = c(1, 2, 4)` in any
+   intuitive way. Either drop `aspect` when any axis is
+   non-numeric, or document the surprise.
+3. **Mixed numeric + categorical color.** If `color` is continuous
+   and one axis is categorical, the legend / colorbar pairing gets
+   busy. Worth a small design pass before shipping.
+
+### Out of scope
+
+- Animation frames (plotly's `frame` aesthetic) — separate feature.
+- 3D surface / mesh from non-numeric inputs (doesn't make sense).
+
+### Related
+
+- v1 of `plot_scatter3d()` rejects non-numeric axes with an error pointing
+  users to `color` for grouping. This entry is the eventual home for
+  that case.
+
+## A real bundled teaching dataset (replaces / augments `moderation_data`)
+
+### Motivation
+
+`moderation_data` is a synthetic four-column data frame (`y`, `x`, `z`,
+`w`, all numeric) built for one specific function:
+`plot_moderation_3d()`. As more functions in the package adopt it as
+their default `data =` argument (currently
+`interactive_moderation_3d()` and, as of the
+`feature-interactive-plot3d` branch, `plot_scatter3d()` /
+`interactive_scatter3d()`), it's getting stretched into a "general demo
+dataset" role it was never designed for.
+
+A real, richer bundled dataset would:
+
+- Make `?plot_scatter3d`, `?plot_logit`, `?plot_pca`, `?plot_regr`, etc. tell
+  a coherent narrative ("here is one dataset, here are several
+  questions you can ask of it") rather than each example being a toy.
+- Cover the **type mix** different functions need:
+  - 3+ numeric columns (for `plot_scatter3d`, `plot_pca`)
+  - At least one continuous predictor + one binary/factor outcome
+    (for `plot_logit`)
+  - A continuous predictor + continuous moderator + optional
+    categorical moderator (for `plot_moderation_3d`,
+    `plot_moderation()` when added)
+  - A categorical grouping variable (for `color` in `plot_scatter3d`, and
+    for the deferred non-numeric-axis support)
+  - Ideally enough rows (~100–500) to make sampling/CI demos meaningful
+- Carry a public-domain or permissive license suitable for
+  redistribution in a CRAN package.
+
+### Sketch
+
+Candidate sources to evaluate:
+
+- **`palmerpenguins`-style**: a small, real, well-documented dataset
+  with the right type mix and an evocative narrative. Either bundle a
+  similar dataset directly or use `palmerpenguins` as Suggests in
+  examples.
+- **A subset of an athletic decathlon dataset** (the user's original
+  3D scatter sample plotted `hj` / `X100m` / `X110h` from one) —
+  natural fit for `plot_scatter3d` and has continuous variables with
+  genuinely different scales (seconds vs. meters), exactly the case
+  `aspect` exists to address.
+- **A small Likert / survey dataset** for moderation and logit demos.
+
+Whichever is chosen: stored in `data/` via `usethis::use_data()`,
+documented in `R/data.R` alongside the existing entries, and added to
+`Depends: R (>= 4.0.0)` only — no new heavy dataset packages as hard
+dependencies.
+
+### Open questions
+
+1. **One dataset or two?** A single dataset that serves every function
+   has to cover a lot of ground (numeric mix, categorical levels,
+   binary outcome, dates) and risks feeling artificial. Two smaller
+   datasets — one continuous-heavy, one mixed-with-categorical — may
+   be cleaner. Cost: more `?dataname` entries to maintain and more
+   choice for users to make.
+2. **Replace or add?** Keep `moderation_data` (existing examples and
+   tests reference it; the function-name pair `plot_moderation_3d` /
+   `moderation_data` is mnemonic) and add the new dataset alongside,
+   versus retire `moderation_data` and migrate everything. Leaning
+   "add" — `moderation_data` earns its keep as a
+   *clean / no-confounders* demo for moderation specifically.
+3. **License and provenance.** Real datasets need a documented
+   source and license. Bundle the cleaning code under
+   `data-raw/` (already a directory in the package) so the
+   derivation is reproducible.
+4. **Tests.** Every function defaulting to the new dataset needs
+   updated tests — including the auto-pick path for `plot_scatter3d()`
+   (which is deterministic on column order).
+
+### Out of scope
+
+- Replacing the synthetic vectors used inside individual tests (those
+  are local, fast, and deterministic — leave alone).
+- A vignette built around the dataset (separate work; should follow
+  the dataset, not precede it).
+
+### Related
+
+- `data/moderation_data.rda` and `R/data.R` document the current
+  state.
+- The `feature-interactive-plot3d` branch added `plot_scatter3d()` /
+  `interactive_scatter3d()` with `data = moderation_data` defaults —
+  this entry is the cleanup once the package has more than one
+  function casually depending on `moderation_data` as a generic demo.

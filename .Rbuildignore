@@ -5,3 +5,8 @@
 ^CLAUDE\..*\.md$
 ^docs$
 ^\.claude$
+^\.git$
+^\.mailmap$
+^\.github$
+^LICENSE\.md$
+^data-raw$

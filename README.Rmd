@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # compstatslib
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/soumyaray/compstatslib/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/soumyaray/compstatslib/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This R Package is a collection of interactive tools and helper functions that help teachers and learners learn concepts in computational statistics. Useful for homework, in-class demonstrations, or self-learning.
@@ -54,6 +55,11 @@ Three types of functions are made available:
 - `interactive_moderation_3d()` Interactive Shiny gadget that fits a moderated regression and renders the fitted surface as a rotatable 3D wireframe. Two sliders control the viewing angle so students can see how an interaction term twists the surface relative to an additive (planar) model.
 - `plot_moderation_3d()` Non-interactive counterpart that returns a `lattice::wireframe` trellis object for the moderation surface. Accepts any model formula (`y ~ x * z`, `y ~ x + z`, or larger models with extra controls — pass `iv` and `mod` to choose which two predictors are plotted; the rest are held at typical values).
 - `moderation_data` Bundled synthetic dataset used as the default example for the two functions above; calibrated to make the interaction effect visually obvious. Includes an unrelated noise variable `w` for demonstrating multi-predictor formulas.
+
+### 3D Scatterplots
+
+- `interactive_scatter3d()` Interactive Shiny gadget for exploring three numeric columns of a data frame as a rotatable 3D point cloud. Column pickers swap x / y / z (and an optional colour mapping) at runtime; aspect, opacity, and marker-size sliders tune the view. Rotation and zoom persist across slider/picker changes within the gadget. On Done, prints a reproducible `plot_scatter3d(...)` call to the console — including the captured camera position — so the exact rotation and zoom can be pasted into an Rmd or script.
+- `plot_scatter3d()` Non-interactive counterpart that returns a `plotly` htmlwidget for a 3D scatterplot of three numeric columns. Supports optional colour mapping (numeric → continuous scale; factor / character → discrete palette), aspect-ratio control, marker opacity / size, custom axis titles, and an explicit `camera` argument for reproducing a specific view captured from the gadget.
 
 ### Principal Components Analysis
 
