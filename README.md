@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/soumyaray/compstatslib/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/soumyaray/compstatslib/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This R Package is a collection of interactive tools and helper functions
