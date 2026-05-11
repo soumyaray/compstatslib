@@ -170,4 +170,219 @@ test_that("Plotting 3D moderation holds factor covariate at first level", {
   )
 })
 
+# 3D scatter plotting
+test_that("plot_scatter3d() with explicit x/y/z runs without error", {
+  set.seed(1)
+  df <- data.frame(
+    a = rnorm(30),
+    b = rnorm(30),
+    c = rnorm(30)
+  )
+  expect_error(plot_scatter3d(df, x = "a", y = "b", z = "c"), NA)
+})
+
+test_that("plot_scatter3d() returns a plotly htmlwidget", {
+  set.seed(2)
+  df <- data.frame(
+    a = rnorm(30),
+    b = rnorm(30),
+    c = rnorm(30)
+  )
+  result <- plot_scatter3d(df, x = "a", y = "b", z = "c")
+  expect_s3_class(result, "plotly")
+})
+
+test_that("plot_scatter3d() is silent when data has exactly 3 numeric columns", {
+  set.seed(3)
+  df <- data.frame(
+    a = rnorm(30),
+    b = rnorm(30),
+    c = rnorm(30)
+  )
+  expect_no_message(plot_scatter3d(df))
+})
+
+test_that("plot_scatter3d() messages chosen and skipped columns when more than 3 numeric", {
+  set.seed(4)
+  df <- data.frame(
+    a = rnorm(30),
+    b = rnorm(30),
+    c = rnorm(30),
+    d = rnorm(30),
+    e = rnorm(30)
+  )
+  expect_message(plot_scatter3d(df), "a.*b.*c")
+  expect_message(plot_scatter3d(df), "d.*e")
+})
+
+test_that("plot_scatter3d() errors when data has fewer than 3 numeric columns", {
+  set.seed(5)
+  df <- data.frame(
+    a = rnorm(20),
+    b = rnorm(20),
+    grp = factor(sample(c("x", "y"), 20, replace = TRUE))
+  )
+  expect_error(plot_scatter3d(df), "at least 3 numeric")
+})
+
+test_that("plot_scatter3d() errors when a named column is missing from data", {
+  set.seed(6)
+  df <- data.frame(
+    a = rnorm(20),
+    b = rnorm(20),
+    c = rnorm(20)
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "missing"),
+    "missing"
+  )
+})
+
+test_that("plot_scatter3d() errors when an axis column is non-numeric", {
+  set.seed(7)
+  df <- data.frame(
+    a = rnorm(20),
+    b = rnorm(20),
+    fac = factor(sample(c("p", "q"), 20, replace = TRUE)),
+    chr = sample(letters[1:3], 20, replace = TRUE),
+    bool = sample(c(TRUE, FALSE), 20, replace = TRUE),
+    dte = as.Date("2025-01-01") + 1:20
+  )
+  for (bad in c("fac", "chr", "bool", "dte")) {
+    expect_error(
+      plot_scatter3d(df, x = "a", y = "b", z = bad),
+      "numeric"
+    )
+  }
+})
+
+test_that("plot_scatter3d() accepts color column of any type", {
+  set.seed(8)
+  df <- data.frame(
+    a = rnorm(30),
+    b = rnorm(30),
+    c = rnorm(30),
+    num_grp = runif(30),
+    fac_grp = factor(sample(c("alpha", "beta"), 30, replace = TRUE)),
+    chr_grp = sample(c("p", "q", "r"), 30, replace = TRUE)
+  )
+  for (col in c("num_grp", "fac_grp", "chr_grp")) {
+    expect_error(
+      plot_scatter3d(df, x = "a", y = "b", z = "c", color = col),
+      NA
+    )
+  }
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", color = "missing"),
+    "missing"
+  )
+})
+
+test_that("plot_scatter3d() validates aspect (length-3 positive numeric)", {
+  set.seed(9)
+  df <- data.frame(
+    a = rnorm(20),
+    b = rnorm(20),
+    c = rnorm(20)
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", aspect = c(1, 2, 4)),
+    NA
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", aspect = c(1, 2)),
+    "length 3"
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", aspect = c(1, 2, 3, 4)),
+    "length 3"
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", aspect = c(1, 0, 1)),
+    "positive"
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", aspect = c(1, -1, 1)),
+    "positive"
+  )
+})
+
+test_that("plot_scatter3d() validates opacity (in (0, 1])", {
+  set.seed(10)
+  df <- data.frame(
+    a = rnorm(20),
+    b = rnorm(20),
+    c = rnorm(20)
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", opacity = 0.3),
+    NA
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", opacity = 1),
+    NA
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", opacity = 0),
+    "opacity"
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", opacity = -0.1),
+    "opacity"
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", opacity = 1.5),
+    "opacity"
+  )
+})
+
+test_that("plot_scatter3d() validates size (positive numeric)", {
+  set.seed(11)
+  df <- data.frame(
+    a = rnorm(20),
+    b = rnorm(20),
+    c = rnorm(20)
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", size = 10),
+    NA
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", size = 0),
+    "size"
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", size = -2),
+    "size"
+  )
+})
+
+test_that("plot_scatter3d() validates camera arg", {
+  set.seed(12)
+  df <- data.frame(a = rnorm(20), b = rnorm(20), c = rnorm(20))
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c",
+                   camera = list(eye = list(x = 2, y = 2, z = 2))),
+    NA
+  )
+  expect_error(
+    plot_scatter3d(df, x = "a", y = "b", z = "c", camera = "bad"),
+    "camera"
+  )
+})
+
+test_that("plot_scatter3d() rewrites unquoted-identifier errors with a quote hint", {
+  set.seed(13)
+  df <- data.frame(a = rnorm(20), b = rnorm(20), c = rnorm(20))
+  # `nope` is intentionally undefined in this scope
+  expect_error(
+    plot_scatter3d(df, x = nope, y = "b", z = "c"),
+    "character column name"
+  )
+  expect_error(
+    plot_scatter3d(df, x = 1, y = "b", z = "c"),
+    "character"
+  )
+})
+
 unlink("Rplots.pdf")
